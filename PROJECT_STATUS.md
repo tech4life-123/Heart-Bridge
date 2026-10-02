@@ -1,6 +1,6 @@
 # Project status
 
-**Current phase:** 3 (Profiles) built. Phase 2 phone OTP postponed (no SMS budget); email + password remains the working login. Stopped at the Phase 3 boundary.
+**Current phase:** 4 (Discovery) built. Phase 3 (Profiles) complete. Phase 2 phone OTP postponed (no SMS budget); email + password remains the working login. Stopped at the Phase 3 boundary.
 
 ## Completed
 
@@ -24,6 +24,16 @@
 - Live RLS test `supabase/tests/rls_profiles.sql`: all checks pass except the 4 photo-function checks (migration pending).
 - Deferred to Phase 4: compatibility questionnaire, viewing other people's profiles/photos (needs block/age/visibility policies).
 - Not built / honest caveats: phone number is unverified (no badge); no browser end-to-end test of signup/onboarding from the build environment; seeded locations are an initial set.
+
+## Phase 4 (Discovery) - built
+
+- Migration `20261002040000_discovery.sql` applied live: `likes`, `passes`, `saved_profiles`, `blocks` (table only; UI is Phase 6), `compatibility_questions` (6 seeded, no protected attributes) and `compatibility_answers` (private), `can_view_profile()` (the single visibility gate), `profile_cards()`, `discover_profiles()`, a storage policy so people may sign photos of profiles they are allowed to see, and a configurable `daily_like_limit` setting (default 50, anti-spam).
+- Screens: `/app/discover` (recommended, filters, pages), `/app/people/[id]` (full profile + gallery), `/app/saved`, `/app/profile/questions`, bottom nav (Home, Discover, Saved, Profile).
+- Filters: age, gender, place (country, county, city, community), intention, interests, children, smoking, drinking. Verified-only is intentionally absent until real verification exists.
+- Compatibility: explainable, 7 factors (intention, location, interests, lifestyle, children, languages, questionnaire); only comparable factors count so missing data never lowers a score; shown with reasons and a "guide, not a prediction" note.
+- Tests: `supabase/tests/rls_discovery.sql` (40 checks, all pass live), 18 new unit tests (scoring, filters).
+- Not built yet (by design): mutual match creation, "It's a Match", messaging (Phase 5), block/report UI (Phase 6), premium filters/likes (Phase 7). Likes are stored now; matches will be derived from mutual likes in Phase 5.
+- Known limits: the scoring pool is the first 60 eligible people per viewer per day, shuffled deterministically; move scoring into SQL when the user base grows. Photos for other users are shown via signed URLs (1 hour).
 
 ## Verification
 
@@ -50,7 +60,7 @@ See SECURITY.md "Known gaps". No profile editing, photos, discovery or chat yet 
 
 ## Next phase
 
-Apply the photo-functions migration, test signup and onboarding on a phone, then Phase 4 (Discovery). Phone OTP (Phase 2) when an SMS provider is affordable.
+Test signup, onboarding and discovery on a phone with two real accounts, then Phase 5 (Matching and chat). Phone OTP (Phase 2) when an SMS provider is affordable.
 
 ## Unresolved decisions
 

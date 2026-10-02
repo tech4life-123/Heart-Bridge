@@ -29,6 +29,7 @@
 - **App-level rate limiting**: Supabase Auth's built-in limits apply today; add per-IP/user limits for likes, messages and reports in Phases 3-4.
 - **Suspended/banned enforcement** at sign-in and in RLS: Phase 5.
 - **Uploads** (Phase 3): private bucket, 2MB, signature check (JPEG/WebP only), owner-folder policies, client-side re-encoding strips EXIF. Gap: no server-side re-encoding or malware/NSFW scanning; add with moderation (Phase 6/9).
+- **Discovery** (Phase 4): visibility is decided in one database function; raw profile rows of others are never readable; photos of others are only signable if that function allows it; questionnaire answers are private (only an aggregate similarity is used). Likes are rate-limited by a configurable daily limit. Gap: no block/report UI until Phase 6, and no moderation of photos or bios yet.
 - **Phone number** is stored privately and unverified until phone OTP exists.
 - **Terms of Service and Privacy Policy** must be written and reviewed by a legal professional before public launch.
 - **RLS behavioural tests** against the live database: script is ready (`supabase/tests/rls_foundation.sql`) but has not been run yet.

@@ -56,6 +56,15 @@ export default async function MyProfilePage() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link
+              href="/app/profile/questions"
+              className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 hover:bg-surface-2"
+            >
+              <span>Compatibility questions (private)</span>
+              <span aria-hidden className="text-gold">›</span>
+            </Link>
+          </li>
         </ul>
       </section>
 

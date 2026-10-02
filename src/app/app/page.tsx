@@ -5,6 +5,7 @@ import { Alert } from "@/components/ui/Alert";
 import { buttonStyles } from "@/components/ui/button-styles";
 import { CompletionCard } from "@/features/profile/components/CompletionCard";
 import { toCompletionInput } from "@/features/profile/bundle";
+import { loadMyAnswers, loadQuestions } from "@/features/discovery/queries";
 import { getProfileBundle } from "@/features/profile/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,14 +27,36 @@ export default async function AppHomePage() {
     redirect(`/app/onboarding?step=${Math.min(bundle.profile.onboarding_step + 1, 6)}`);
   }
 
+  const [questions, answers] = await Promise.all([loadQuestions(supabase), loadMyAnswers(supabase, user.id)]);
+  const unanswered = questions.filter((q) => answers[q.id] === undefined).length;
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-extrabold tracking-tight">Welcome, {bundle.profile.first_name}.</h1>
       <CompletionCard input={toCompletionInput(bundle)} compact />
-      <Alert tone="info">
-        Your profile is saved. Discovery, matching and chat are the next things we are building. We will tell you
-        when they are ready.
-      </Alert>
+
+      <section className="space-y-3 rounded-3xl border border-line bg-surface p-5">
+        <h2 className="text-xl font-bold">Meet someone</h2>
+        <p className="text-muted">See people who fit what you are looking for, with a clear reason why.</p>
+        <Link href="/app/discover" className={`${buttonStyles.primary} w-full sm:w-auto`}>
+          See recommendations
+        </Link>
+      </section>
+
+      {unanswered > 0 && (
+        <section className="space-y-3 rounded-3xl border border-line bg-surface p-5">
+          <h2 className="text-lg font-bold">Improve your recommendations</h2>
+          <p className="text-muted">
+            {unanswered} quick, optional {unanswered === 1 ? "question" : "questions"} help us explain who suits you.
+            Your answers stay private.
+          </p>
+          <Link href="/app/profile/questions" className={buttonStyles.secondary}>
+            Answer questions
+          </Link>
+        </section>
+      )}
+
+      <Alert tone="info">Matching and chat come next. When someone you like likes you back, you will see it here.</Alert>
       <Link href="/app/profile" className={buttonStyles.secondary}>
         View my profile
       </Link>

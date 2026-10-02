@@ -36,6 +36,23 @@ Migrations: `20261002010000_profiles.sql` (applied), `20261002020000_profile_pho
 
 `profiles` gained gender, bio, occupation, education, languages, lifestyle, intentions, location chain, onboarding fields. Date of birth, account status and onboarding completion are not user-writable; `complete_onboarding()` validates required fields. Storage bucket `profile-photos` is private (2MB, WebP/JPEG) with per-user folder policies.
 
-## Next (Phase 4+)
+## Phase 4 additions
+
+Migration: `20261002040000_discovery.sql` (applied).
+
+| Object | Purpose | Client access |
+|---|---|---|
+| `likes` | Who liked whom | Insert as self when `can_view_profile`; read only likes you sent |
+| `passes` | Hidden from your feed | Own rows |
+| `saved_profiles` | Your saved list | Own rows; insert needs `can_view_profile` |
+| `blocks` | Block list (UI in Phase 6) | Own rows; the blocked user cannot see it |
+| `compatibility_questions` | Short optional questionnaire | Read active; admins manage |
+| `compatibility_answers` | Your private answers | Own rows only |
+| `can_view_profile(target)` | Single visibility gate: both active and onboarded, mutual gender and age preferences, the target's "where I appear" settings, no block either way | Callable by signed-in users |
+| `profile_cards(ids)` / `discover_profiles(...)` | The only shape in which other people's profiles leave the database: age (not DOB), approximate place, no contact details, no neighbourhood | Signed-in users, gated by `can_view_profile` |
+
+Storage: an extra read policy lets a signed-in user sign photos only of people `can_view_profile` allows. `daily_like_limit` lives in `app_settings` (not public).
+
+## Next (Phase 5+)
 
 `profile_photos`, `preferences`, then `likes`, `matches`, `conversations`, `conversation_members`, `messages`, `notifications`, `reports`, `blocks`, `subscription_plans`, `subscriptions`, `payments`. Each is documented here before it is built.

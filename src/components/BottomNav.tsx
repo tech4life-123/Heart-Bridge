@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 
 const items = [
   { href: "/app", label: "Home", match: (p: string) => p === "/app" },
+  { href: "/app/discover", label: "Discover", match: (p: string) => p.startsWith("/app/discover") || p.startsWith("/app/people") },
+  { href: "/app/saved", label: "Saved", match: (p: string) => p.startsWith("/app/saved") },
   { href: "/app/profile", label: "Profile", match: (p: string) => p.startsWith("/app/profile") },
 ];
 
-/** Mobile bottom navigation. Discover, Matches and Messages are added as those features ship. */
+/** Mobile bottom navigation. Matches and Messages are added as those features ship. */
 export function BottomNav() {
   const pathname = usePathname();
   return (

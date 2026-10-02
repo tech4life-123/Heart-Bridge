@@ -19,7 +19,7 @@ export function Choice({
   hint?: string;
 }) {
   return (
-    <label className="group relative block cursor-pointer has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50">
+    <label className="group/choice relative block cursor-pointer has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50">
       <input
         type={type}
         name={name}
@@ -32,7 +32,7 @@ export function Choice({
         <span className="flex items-center gap-2">
           <span
             aria-hidden
-            className={`flex size-5 shrink-0 items-center justify-center border-2 border-line text-xs text-transparent group-has-[:checked]:border-gold group-has-[:checked]:bg-gold group-has-[:checked]:text-on-gold ${
+            className={`flex size-5 shrink-0 items-center justify-center border-2 border-line text-xs text-transparent group-has-[:checked]/choice:border-gold group-has-[:checked]/choice:bg-gold group-has-[:checked]/choice:text-on-gold ${
               type === "radio" ? "rounded-full" : "rounded-md"
             }`}
           >
