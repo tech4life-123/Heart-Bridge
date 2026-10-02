@@ -1,6 +1,6 @@
 # Project status
 
-**Current phase:** 1 (Foundation) complete. Stopped at the Phase 1 boundary.
+**Current phase:** 3 (Profiles) built. Phase 2 phone OTP postponed (no SMS budget); email + password remains the working login. Stopped at the Phase 3 boundary.
 
 ## Completed
 
@@ -14,6 +14,16 @@
 - Owner-controlled launch config (FREE mode, 100-user limit, subscriptions off), nothing hard-coded
 - Security headers, error mapping, structured logging, open-redirect protection
 - Docs: README, ARCHITECTURE, SECURITY, ROADMAP, database doc, ADR
+
+## Phase 3 (Profiles) - built
+
+- Migration `20261002010000_profiles.sql` applied live: locations (Liberia counties/towns/communities + diaspora countries), interests, user_interests, preferences, user_contacts (private optional phone, unverified), profile_photos, extended `profiles`, `complete_onboarding()`, private `profile-photos` storage bucket with owner-folder policies.
+- Migration `20261002020000_profile_photo_functions.sql` (`set_main_photo`, `delete_profile_photo`) is in the repo but **NOT yet applied**: run it in the Supabase SQL Editor. Until then, deleting a photo or choosing a main photo fails with a friendly error.
+- UI: 6-step onboarding (about, photos, interests, looking for, location, preview), profile view, per-section editing, completion score, bottom nav.
+- Photos: compressed on the device (WebP/JPEG, max 1280px, EXIF stripped), server checks size (2MB) and file signature, max 6, private bucket, signed URLs for the owner only.
+- Live RLS test `supabase/tests/rls_profiles.sql`: all checks pass except the 4 photo-function checks (migration pending).
+- Deferred to Phase 4: compatibility questionnaire, viewing other people's profiles/photos (needs block/age/visibility policies).
+- Not built / honest caveats: phone number is unverified (no badge); no browser end-to-end test of signup/onboarding from the build environment; seeded locations are an initial set.
 
 ## Verification
 
@@ -40,7 +50,7 @@ See SECURITY.md "Known gaps". No profile editing, photos, discovery or chat yet 
 
 ## Next phase
 
-Phase 2 (Profiles): profile fields, photos, preferences, onboarding.
+Apply the photo-functions migration, test signup and onboarding on a phone, then Phase 4 (Discovery). Phone OTP (Phase 2) when an SMS provider is affordable.
 
 ## Unresolved decisions
 

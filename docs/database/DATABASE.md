@@ -21,6 +21,21 @@ Migration: `supabase/migrations/20261002000000_foundation.sql`
 
 `account_status`: `active` -> `suspended` | `banned`. Only staff will change it (Phase 5); users cannot.
 
-## Next (Phase 2+)
+## Phase 3 additions
+
+Migrations: `20261002010000_profiles.sql` (applied), `20261002020000_profile_photo_functions.sql` (pending).
+
+| Table | Purpose | Client access |
+|---|---|---|
+| `locations` | Hierarchy country > region > city > community; diaspora countries | Read all; writes admin only |
+| `interests` | Fixed interest list | Read all |
+| `user_interests` | Up to 10 per user | Own rows |
+| `preferences` | Seeking genders, age range, visibility scope | Own row |
+| `user_contacts` | Optional private phone, `phone_verified` not user-writable | Own row only |
+| `profile_photos` | Up to 6 per user, position 0 = main | Own rows (others' photos arrive in Phase 4 with block rules) |
+
+`profiles` gained gender, bio, occupation, education, languages, lifestyle, intentions, location chain, onboarding fields. Date of birth, account status and onboarding completion are not user-writable; `complete_onboarding()` validates required fields. Storage bucket `profile-photos` is private (2MB, WebP/JPEG) with per-user folder policies.
+
+## Next (Phase 4+)
 
 `profile_photos`, `preferences`, then `likes`, `matches`, `conversations`, `conversation_members`, `messages`, `notifications`, `reports`, `blocks`, `subscription_plans`, `subscriptions`, `payments`. Each is documented here before it is built.
