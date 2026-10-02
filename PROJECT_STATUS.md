@@ -30,6 +30,10 @@ Not yet verified:
 - **End-to-end auth** (real signup, email delivery, confirmation, reset): requires Supabase email settings and a deployed or local URL reachable from a browser.
 - No visual or device testing.
 
+## Deployment
+
+Vercel project `heartbridge` (team liberia-software-production-corporation), production deploys from `main` of `tech4life-123/Heart-Bridge`. Env vars set: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`. Build succeeded; Vercel Authentication disabled so the site is public. Live routes were not smoke-tested from the build environment (network restrictions); verify by hand.
+
 ## Known limitations
 
 See SECURITY.md "Known gaps". No profile editing, photos, discovery or chat yet (Phases 2-4).
@@ -40,7 +44,7 @@ Phase 2 (Profiles): profile fields, photos, preferences, onboarding.
 
 ## Unresolved decisions
 
-1. Vercel project and production domain.
+1. Custom production domain (currently the Vercel alias `heartbridge-liberia-software-production-corporation.vercel.app`; keep Supabase Site URL and `NEXT_PUBLIC_SITE_URL` in sync if it changes).
 2. Custom SMTP provider for auth emails (free tier sender is heavily rate-limited).
 3. Whether to disable the unused `pg_graphql` extension (hides table names from the public schema).
 4. Phone auth later, and which SMS provider.
