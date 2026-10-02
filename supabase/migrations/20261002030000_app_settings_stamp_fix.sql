@@ -15,3 +15,28 @@ begin
   return new;
 end;
 $$;
+
+-- Same cause: the audit trigger also fired on that cascade and tried to log the
+-- deleted user as actor. Audit only real value changes.
+create or replace function public.app_settings_audit()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if new.value is distinct from old.value then
+    insert into public.audit_logs (actor_id, action, entity_type, entity_id, metadata)
+    values (
+      (select auth.uid()),
+      'app_setting.updated',
+      'app_setting',
+      new.key,
+      jsonb_build_object('old', old.value, 'new', new.value)
+    );
+  end if;
+  return new;
+end;
+$$;
+
+revoke execute on function public.app_settings_audit() from public, anon, authenticated;
