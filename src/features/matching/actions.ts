@@ -6,8 +6,9 @@ import { z } from "zod";
 import { GENERIC_ERROR } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
+import { detectScamPattern } from "@/features/safety/scam";
 
-export type SendResult = { ok: true; id: string } | { ok: false; error: string };
+export type SendResult = { ok: true; id: string; reminder?: boolean } | { ok: false; error: string };
 
 const sendSchema = z.object({ matchId: z.uuid(), body: z.string().trim().min(1).max(2000) });
 
@@ -29,6 +30,14 @@ export async function sendMessageAction(matchId: string, body: string): Promise<
     if (error?.code === "42501") return { ok: false, error: "You can't message this person any more." };
     logger.error("matching.send_failed", { code: error?.code });
     return { ok: false, error: GENERIC_ERROR };
+  }
+
+  // A neutral reminder only. Never accuse: just record a quiet flag for human review.
+  const reason = detectScamPattern(parsed.data.body);
+  if (reason) {
+    const { error: flagErr } = await supabase.rpc("record_message_flag", { p_message_id: data, p_reason: reason });
+    if (flagErr) logger.error("safety.flag_failed", { code: flagErr.code });
+    return { ok: true, id: data, reminder: true };
   }
   return { ok: true, id: data };
 }

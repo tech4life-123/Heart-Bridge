@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { createBrowserSupabase } from "@/lib/supabase/client";
+import { SCAM_REMINDER, detectScamPattern } from "@/features/safety/scam";
 import { sendMessageAction } from "../actions";
 import type { ChatMessage } from "../queries";
 
@@ -40,6 +41,7 @@ export function ChatRoom({
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [sentReminder, setSentReminder] = useState(false);
   const [otherRead, setOtherRead] = useState<string | null>(otherLastReadAt);
   const channelRef = useRef<RealtimeChannel | null>(null);
   const lastTypingSent = useRef(0);
@@ -135,15 +137,22 @@ export function ChatRoom({
       setError(res.error);
       return; // keep the text so nothing is lost
     }
+    if (res.reminder) setSentReminder(true);
     setText("");
     add({ id: res.id, body, created_at: new Date().toISOString(), sender_id: meId });
   }
 
+  const incomingLooksRisky = messages.some((m) => m.sender_id !== meId && detectScamPattern(m.body) !== null);
   const lastMine = [...messages].reverse().find((m) => m.sender_id === meId);
   const seen = lastMine && otherRead && new Date(otherRead) >= new Date(lastMine.created_at);
 
   return (
     <div className="flex flex-col">
+      {(incomingLooksRisky || sentReminder) && (
+        <p role="note" className="mb-3 rounded-2xl border-2 border-warning/50 bg-warning/10 p-4 text-sm font-medium">
+          {SCAM_REMINDER}
+        </p>
+      )}
       <div className="space-y-2 pb-4" role="log" aria-live="polite" aria-label={`Conversation with ${firstName}`}>
         {messages.length === 0 && (
           <p className="rounded-2xl bg-surface p-4 text-center text-muted">

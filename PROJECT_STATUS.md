@@ -88,3 +88,10 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Blocks (table from Phase 4) already end messaging and hide the match; block/report UI is Phase 6.
 - Tests: `supabase/tests/rls_matching.sql` (32 checks, all true live).
 - Not yet: push/email notifications, unmatch button, report/block buttons (Phase 6), message attachments (not planned).
+
+
+## Phase 6 - Safety (built)
+- Report (all 9 spec categories, optional description) and Block on every profile and inside every conversation; Profile > Blocked people to unblock. Reports are filed only through `report_user()` (matched or visible people only, 10/day, duplicates collapsed) and are unreadable by clients; the reported person is never told who reported.
+- Neutral anti-scam reminder (never an accusation) when a message looks like a money/investment/payment request, shown to both sides; the sender's message also records ONE quiet `safety_flags` row per day for staff review. Underage reports and 3+ distinct reporters raise flags automatically. No automatic punishment anywhere.
+- Tests: `supabase/tests/rls_safety.sql` (15 checks, all true live); `scam.test.ts`.
+- Deferred honestly: staff moderation queue and actions (warn/suspend/ban/restore, audit logging) = Phase 8; real identity verification = later (nothing is shown as "verified" until a real process exists).

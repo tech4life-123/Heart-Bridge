@@ -741,6 +741,27 @@ export type Database = {
     };
     Functions: {
       complete_onboarding: { Args: never; Returns: undefined };
+      report_user: {
+        Args: {
+          p_reported: string;
+          p_category: Database["public"]["Enums"]["report_category"];
+          p_description?: string;
+          p_match_id?: string;
+        };
+        Returns: undefined;
+      };
+      record_message_flag: {
+        Args: { p_message_id: string; p_reason: string };
+        Returns: undefined;
+      };
+      my_blocked: {
+        Args: never;
+        Returns: {
+          blocked_id: string;
+          first_name: string;
+          blocked_at: string;
+        }[];
+      };
       are_matched: { Args: { p_other: string }; Returns: boolean };
       match_id_with: { Args: { p_other: string }; Returns: string };
       my_matches: {
@@ -826,6 +847,17 @@ export type Database = {
     };
     Enums: {
       account_status: "active" | "suspended" | "banned";
+      report_category:
+        | "fake_profile"
+        | "scam"
+        | "harassment"
+        | "sexual_misconduct"
+        | "threatening_behavior"
+        | "spam"
+        | "underage_user"
+        | "inappropriate_content"
+        | "other";
+      report_status: "open" | "reviewing" | "resolved" | "dismissed";
       admin_role: "moderator" | "admin";
       children_preference:
         | "have_children"

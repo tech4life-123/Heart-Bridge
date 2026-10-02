@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Alert } from "@/components/ui/Alert";
 import { requireOnboarded } from "@/features/discovery/context";
 import { hideConversationAction } from "@/features/matching/actions";
+import { SafetyPanel } from "@/features/safety/components/SafetyPanel";
 import { ChatRoom } from "@/features/matching/components/ChatRoom";
 import { loadChat } from "@/features/matching/queries";
 
@@ -42,18 +43,18 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
           <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-full px-3 text-sm font-semibold text-muted hover:text-fg">
             Options
           </summary>
-          <form
-            action={hideConversationAction}
-            className="absolute right-0 z-10 mt-1 w-64 space-y-2 rounded-2xl border border-line bg-surface p-4 shadow-lg"
-          >
-            <input type="hidden" name="matchId" value={id} />
-            <p className="text-sm text-muted">
-              This removes the conversation from your view only. {chat.firstName} keeps theirs. New messages will bring it back.
-            </p>
-            <button type="submit" className="min-h-11 w-full rounded-full border-2 border-danger px-4 font-semibold text-danger">
-              Delete conversation
-            </button>
-          </form>
+          <div className="absolute right-0 z-10 mt-1 w-72 max-w-[85vw] space-y-3 rounded-2xl border border-line bg-surface p-4 shadow-lg">
+            <SafetyPanel targetId={chat.otherId} name={chat.firstName} matchId={id} back="matches" />
+            <form action={hideConversationAction} className="space-y-2">
+              <input type="hidden" name="matchId" value={id} />
+              <p className="text-sm text-muted">
+                Deleting removes the conversation from your view only. {chat.firstName} keeps theirs. New messages bring it back.
+              </p>
+              <button type="submit" className="min-h-11 w-full rounded-full border-2 border-line px-4 font-semibold hover:border-danger hover:text-danger">
+                Delete conversation
+              </button>
+            </form>
+          </div>
         </details>
       </div>
 

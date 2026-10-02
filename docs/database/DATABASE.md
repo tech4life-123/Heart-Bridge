@@ -60,3 +60,7 @@ Storage: an extra read policy lets a signed-in user sign photos only of people `
 
 ## Phase 5 additions
 Tables: `matches` (ordered pair, trigger-created), `match_participants` (seen/read/hidden marks per person), `messages` (write only via `send_message`). Functions: `my_matches`, `chat_meta`, `unread_summary`, `send_message`, `mark_conversation_read`, `mark_match_seen`, `hide_conversation`, `match_id_with`, `are_matched`, `can_use_typing_topic`. Realtime publication: `messages`, `match_participants`. Storage policy `profile_photos_read_matched`. Realtime policies on `realtime.messages` for private `typing:<match>` topics.
+
+
+## Phase 6 additions
+Tables `reports` (+ enums `report_category`, `report_status`) and `safety_flags`: RLS on, no client grants. Functions `report_user`, `record_message_flag`, `my_blocked`.

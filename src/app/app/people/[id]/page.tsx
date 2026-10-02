@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Alert } from "@/components/ui/Alert";
+import { SafetyPanel } from "@/features/safety/components/SafetyPanel";
 import { CardActions } from "@/features/discovery/components/CardActions";
 import { CompatibilityBadge } from "@/features/discovery/components/CompatibilityBadge";
 import { requireOnboarded } from "@/features/discovery/context";
@@ -141,6 +142,10 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
           <CardActions id={person.id} firstName={person.firstName} isLiked={person.isLiked} isSaved={person.isSaved} />
         </div>
       </article>
+
+      <section aria-label="Safety" className="rounded-3xl border border-line bg-surface p-4">
+        <SafetyPanel targetId={person.id} name={person.firstName} back="discover" />
+      </section>
     </div>
   );
 }
