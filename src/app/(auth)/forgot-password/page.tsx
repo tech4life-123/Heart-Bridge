@@ -13,7 +13,7 @@ export default function ForgotPasswordPage() {
       </p>
       <ForgotPasswordForm />
       <p className="mt-6 text-center text-sm">
-        <Link href="/login" className="font-semibold text-rose underline">
+        <Link href="/login" className="font-semibold text-gold underline">
           Back to sign in
         </Link>
       </p>

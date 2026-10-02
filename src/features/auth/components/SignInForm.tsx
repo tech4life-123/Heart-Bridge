@@ -36,7 +36,7 @@ export function SignInForm({ next, notice }: { next?: string; notice?: string })
       />
       <SubmitButton pendingText="Signing in…">Sign in</SubmitButton>
       <p className="text-center text-sm">
-        <Link href="/forgot-password" className="font-semibold text-rose underline">
+        <Link href="/forgot-password" className="font-semibold text-gold underline">
           Forgot your password?
         </Link>
       </p>

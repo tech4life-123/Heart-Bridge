@@ -1,37 +1,48 @@
 @import "tailwindcss";
 
-/* HeartBridge design tokens. Warm, trustworthy, restrained. */
+/* HeartBridge design tokens. Premium black / white / gold, taken from the logo. */
 :root {
-  --hb-cream: #fff8f2;
-  --hb-sand: #f3e6da;
-  --hb-ink: #2a1b22;
-  --hb-muted: #6b5560;
-  --hb-rose: #c93a5b;
-  --hb-rose-dark: #9f2a45;
-  --hb-gold: #e0a526;
-  --hb-leaf: #2f7d5b;
-  --hb-danger: #b42318;
+  --hb-canvas: #000000; /* primary background (matches the logo's black) */
+  --hb-surface: #111111; /* card background */
+  --hb-surface-2: #1a1a1a; /* raised / input background */
+  --hb-line: #2e2e2e; /* borders */
+  --hb-fg: #ffffff; /* primary text */
+  --hb-muted: #b8b8b8; /* secondary text (AAA on black) */
+  --hb-gold: #f5b921; /* accent: logo gold */
+  --hb-gold-dark: #d99a0b; /* accent hover */
+  --hb-on-gold: #000000; /* text on gold */
+  --hb-success: #3ddc97;
+  --hb-warning: #ffb020;
+  --hb-danger: #ff6b6b;
+  --hb-verified: #5bb5ff; /* verification badges */
 }
 
 @theme inline {
-  --color-cream: var(--hb-cream);
-  --color-sand: var(--hb-sand);
-  --color-ink: var(--hb-ink);
+  --color-canvas: var(--hb-canvas);
+  --color-surface: var(--hb-surface);
+  --color-surface-2: var(--hb-surface-2);
+  --color-line: var(--hb-line);
+  --color-fg: var(--hb-fg);
   --color-muted: var(--hb-muted);
-  --color-rose: var(--hb-rose);
-  --color-rose-dark: var(--hb-rose-dark);
   --color-gold: var(--hb-gold);
-  --color-leaf: var(--hb-leaf);
+  --color-gold-dark: var(--hb-gold-dark);
+  --color-on-gold: var(--hb-on-gold);
+  --color-success: var(--hb-success);
+  --color-warning: var(--hb-warning);
   --color-danger: var(--hb-danger);
+  --color-verified: var(--hb-verified);
   /* System fonts: zero font download on slow mobile connections. */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--hb-cream);
-  color: var(--hb-ink);
+  background: var(--hb-canvas);
+  color: var(--hb-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -39,6 +50,11 @@ body {
 :focus-visible {
   outline: 3px solid var(--hb-gold);
   outline-offset: 2px;
+}
+
+::selection {
+  background: var(--hb-gold);
+  color: var(--hb-on-gold);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -17,16 +17,18 @@ export const metadata: Metadata = {
     siteName: APP.name,
     title: `${APP.name}: ${APP.tagline}`,
     description: APP.description,
+    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: APP.name }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${APP.name}: ${APP.tagline}`,
     description: APP.description,
+    images: ["/brand/og.png"],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#C93A5B",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };

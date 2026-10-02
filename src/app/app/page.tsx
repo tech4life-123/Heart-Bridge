@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { Logo } from "@/components/Logo";
 import { Alert } from "@/components/ui/Alert";
-import { buttonStyles } from "@/components/ui/Button";
+import { buttonStyles } from "@/components/ui/button-styles";
 import { signOutAction } from "@/features/auth/actions";
 import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
@@ -40,7 +40,7 @@ export default async function AppHomePage() {
         </form>
       </div>
 
-      <h1 className="mt-12 font-serif text-4xl font-bold tracking-tight">
+      <h1 className="mt-12 text-4xl font-bold tracking-tight">
         {profile?.first_name ? `Welcome, ${profile.first_name}.` : "Welcome."}
       </h1>
       <div className="mt-6">

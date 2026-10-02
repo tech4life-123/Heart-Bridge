@@ -58,7 +58,7 @@ export function SignUpForm() {
           <input
             type="checkbox"
             name="confirmAdult"
-            className="mt-1 size-5 shrink-0 accent-rose"
+            className="mt-1 size-5 shrink-0 accent-gold"
             aria-invalid={errors.confirmAdult ? true : undefined}
             aria-describedby={errors.confirmAdult ? "confirmAdult-error" : undefined}
           />

@@ -11,7 +11,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <Link href="/" aria-label="HeartBridge home" className="mb-8 self-start">
         <Logo />
       </Link>
-      <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-sand sm:p-8">
+      <div className="rounded-3xl bg-surface p-6 ring-1 ring-line sm:p-8">
         {children}
       </div>
     </main>

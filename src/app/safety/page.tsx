@@ -31,19 +31,19 @@ export default function SafetyPage() {
       <Link href="/" aria-label="HeartBridge home">
         <Logo />
       </Link>
-      <h1 className="mt-10 font-serif text-4xl font-bold tracking-tight">
+      <h1 className="mt-10 text-4xl font-bold tracking-tight">
         Community rules and safety
       </h1>
 
       <h2 className="mt-10 text-xl font-bold">Community rules</h2>
-      <ul className="mt-4 list-disc space-y-3 pl-5 text-muted marker:text-rose">
+      <ul className="mt-4 list-disc space-y-3 pl-5 text-muted marker:text-gold">
         {rules.map((r) => (
           <li key={r}>{r}</li>
         ))}
       </ul>
 
       <h2 className="mt-10 text-xl font-bold">Staying safe</h2>
-      <ul className="mt-4 list-disc space-y-3 pl-5 text-muted marker:text-rose">
+      <ul className="mt-4 list-disc space-y-3 pl-5 text-muted marker:text-gold">
         {tips.map((t) => (
           <li key={t}>{t}</li>
         ))}

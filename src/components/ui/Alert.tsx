@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
 const styles = {
-  error: "border-danger/40 bg-danger/5 text-danger",
-  success: "border-leaf/40 bg-leaf/5 text-leaf",
-  info: "border-sand bg-white text-ink",
+  error: "border-danger/40 bg-danger/10 text-danger",
+  success: "border-success/40 bg-success/10 text-success",
+  info: "border-line bg-surface text-fg",
 } as const;
 
 export function Alert({

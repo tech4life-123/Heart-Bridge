@@ -13,7 +13,7 @@ export function Field({ name, label, error, hint, className = "", ...props }: Fi
   const errorId = error ? `${name}-error` : undefined;
   return (
     <div className="space-y-1.5">
-      <label htmlFor={name} className="block text-sm font-semibold text-ink">
+      <label htmlFor={name} className="block text-sm font-semibold text-fg">
         {label}
       </label>
       <input
@@ -21,8 +21,8 @@ export function Field({ name, label, error, hint, className = "", ...props }: Fi
         name={name}
         aria-invalid={error ? true : undefined}
         aria-describedby={[hintId, errorId].filter(Boolean).join(" ") || undefined}
-        className={`min-h-11 w-full rounded-xl border-2 bg-white px-4 text-base text-ink placeholder:text-muted/70 ${
-          error ? "border-danger" : "border-sand focus:border-rose"
+        className={`min-h-11 w-full rounded-xl border-2 bg-surface-2 px-4 text-base text-fg placeholder:text-muted/70 ${
+          error ? "border-danger" : "border-line focus:border-gold"
         } ${className}`}
         {...props}
       />

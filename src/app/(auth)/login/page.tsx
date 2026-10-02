@@ -23,7 +23,7 @@ export default async function LoginPage({
       <SignInForm next={safeNextPath(next)} notice={notice} />
       <p className="mt-6 text-center text-sm text-muted">
         New here?{" "}
-        <Link href="/signup" className="font-semibold text-rose underline">
+        <Link href="/signup" className="font-semibold text-gold underline">
           Join HeartBridge
         </Link>
       </p>

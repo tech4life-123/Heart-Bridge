@@ -1,6 +1,6 @@
 # HeartBridge
 
-**Where Hearts Connect.** A dating and relationship platform built for Liberia, designed to expand across Africa.
+**Real People. True Connections.** *Liberia & Beyond.* A dating and relationship platform built for Liberia, designed to expand across Africa.
 
 Stack: Next.js (App Router) · React · TypeScript · Tailwind CSS · Supabase (Postgres, Auth, Storage, Realtime) · Vercel.
 

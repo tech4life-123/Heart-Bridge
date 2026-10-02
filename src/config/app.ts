@@ -6,8 +6,9 @@
  */
 export const APP = {
   name: "HeartBridge",
-  tagline: "Where Hearts Connect.",
+  tagline: "Real People. True Connections.",
   description:
-    "HeartBridge is a safe, private dating platform for people looking for meaningful relationships. Built for Liberia, ready for Africa.",
+    "Connect with people in Liberia and around the world who are looking for meaningful relationships. HeartBridge is a safe, private, 18+ dating platform built for Liberia and the diaspora.",
+  secondaryTagline: "Liberia & Beyond",
   minimumAge: 18,
 } as const;
