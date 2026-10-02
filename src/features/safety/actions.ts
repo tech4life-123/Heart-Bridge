@@ -74,3 +74,13 @@ export async function unblockUserAction(fd: FormData): Promise<void> {
   revalidatePath("/app", "layout");
   redirect("/app/profile/blocked");
 }
+
+/** The person has read a staff warning. */
+export async function acknowledgeWarningAction(fd: FormData): Promise<void> {
+  const id = z.uuid().safeParse(fd.get("id"));
+  if (!id.success) return;
+  const { supabase } = await requireUser("/app");
+  const { error } = await supabase.rpc("ack_warning", { p_id: id.data });
+  if (error) logger.error("safety.ack_failed", { code: error.code });
+  revalidatePath("/app", "layout");
+}

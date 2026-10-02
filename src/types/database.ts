@@ -561,6 +561,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      user_warnings: {
+        Row: {
+          acknowledged_at: string | null;
+          created_at: string;
+          id: string;
+          issued_by: string | null;
+          message: string;
+          user_id: string;
+        };
+        Insert: {
+          acknowledged_at?: string | null;
+          created_at?: string;
+          id?: string;
+          issued_by?: string | null;
+          message: string;
+          user_id: string;
+        };
+        Update: {
+          acknowledged_at?: string | null;
+          created_at?: string;
+          id?: string;
+          issued_by?: string | null;
+          message?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       passes: {
         Row: {
           created_at: string;
@@ -762,6 +789,162 @@ export type Database = {
           blocked_at: string;
         }[];
       };
+      staff_role: {
+        Args: never;
+        Returns: Database["public"]["Enums"]["admin_role"];
+      };
+      staff_has: {
+        Args: { p_roles: Database["public"]["Enums"]["admin_role"][] };
+        Returns: boolean;
+      };
+      ack_warning: { Args: { p_id: string }; Returns: undefined };
+      admin_stats: {
+        Args: never;
+        Returns: {
+          users_total: number;
+          users_active: number;
+          users_suspended: number;
+          users_banned: number;
+          new_users_7d: number;
+          matches_total: number;
+          messages_24h: number;
+          open_reports: number;
+          open_flags: number;
+        }[];
+      };
+      admin_report_queue: {
+        Args: {
+          p_status?: Database["public"]["Enums"]["report_status"];
+          p_limit?: number;
+          p_offset?: number;
+        };
+        Returns: {
+          id: string;
+          category: Database["public"]["Enums"]["report_category"];
+          status: Database["public"]["Enums"]["report_status"];
+          created_at: string;
+          reported_id: string;
+          reported_name: string;
+          reported_status: Database["public"]["Enums"]["account_status"];
+          reports_against: number;
+        }[];
+      };
+      admin_report_detail: {
+        Args: { p_id: string };
+        Returns: {
+          id: string;
+          category: Database["public"]["Enums"]["report_category"];
+          description: string | null;
+          status: Database["public"]["Enums"]["report_status"];
+          created_at: string;
+          resolved_at: string | null;
+          match_id: string | null;
+          reporter_id: string;
+          reporter_name: string;
+          reported_id: string;
+          reported_name: string;
+        }[];
+      };
+      admin_set_report_status: {
+        Args: {
+          p_id: string;
+          p_status: Database["public"]["Enums"]["report_status"];
+          p_note?: string;
+        };
+        Returns: undefined;
+      };
+      admin_report_messages: {
+        Args: { p_report_id: string };
+        Returns: {
+          sender_id: string;
+          sender_name: string;
+          body: string;
+          created_at: string;
+        }[];
+      };
+      admin_find_user: {
+        Args: { p_query: string };
+        Returns: {
+          id: string;
+          first_name: string;
+          account_status: Database["public"]["Enums"]["account_status"];
+          created_at: string;
+        }[];
+      };
+      admin_user_overview: {
+        Args: { p_user: string };
+        Returns: {
+          id: string;
+          first_name: string;
+          age: number;
+          gender: Database["public"]["Enums"]["gender"] | null;
+          account_status: Database["public"]["Enums"]["account_status"];
+          created_at: string;
+          bio: string | null;
+          occupation: string | null;
+          photo_paths: string[];
+          reports_open: number;
+          reports_total: number;
+          warnings: number;
+          matches: number;
+          is_staff: boolean;
+        }[];
+      };
+      admin_set_account_status: {
+        Args: {
+          p_user: string;
+          p_status: Database["public"]["Enums"]["account_status"];
+          p_reason: string;
+        };
+        Returns: undefined;
+      };
+      admin_warn_user: {
+        Args: { p_user: string; p_message: string };
+        Returns: undefined;
+      };
+      admin_flags_queue: {
+        Args: { p_limit?: number };
+        Returns: {
+          id: string;
+          user_id: string;
+          first_name: string;
+          kind: string;
+          details: Json;
+          created_at: string;
+        }[];
+      };
+      admin_review_flag: {
+        Args: { p_id: string; p_status: string };
+        Returns: undefined;
+      };
+      admin_audit_log: {
+        Args: { p_limit?: number; p_offset?: number };
+        Returns: {
+          id: number;
+          actor_name: string | null;
+          action: string;
+          entity_type: string;
+          entity_id: string | null;
+          metadata: Json;
+          created_at: string;
+        }[];
+      };
+      admin_list_staff: {
+        Args: never;
+        Returns: {
+          user_id: string;
+          first_name: string | null;
+          role: Database["public"]["Enums"]["admin_role"];
+          created_at: string;
+        }[];
+      };
+      admin_set_staff_role: {
+        Args: {
+          p_user: string;
+          p_role?: Database["public"]["Enums"]["admin_role"];
+        };
+        Returns: undefined;
+      };
       are_matched: { Args: { p_other: string }; Returns: boolean };
       match_id_with: { Args: { p_other: string }; Returns: string };
       my_matches: {
@@ -858,7 +1041,7 @@ export type Database = {
         | "inappropriate_content"
         | "other";
       report_status: "open" | "reviewing" | "resolved" | "dismissed";
-      admin_role: "moderator" | "admin";
+      admin_role: "moderator" | "admin" | "support" | "finance";
       children_preference:
         | "have_children"
         | "want_children"

@@ -95,3 +95,13 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Neutral anti-scam reminder (never an accusation) when a message looks like a money/investment/payment request, shown to both sides; the sender's message also records ONE quiet `safety_flags` row per day for staff review. Underage reports and 3+ distinct reporters raise flags automatically. No automatic punishment anywhere.
 - Tests: `supabase/tests/rls_safety.sql` (15 checks, all true live); `scam.test.ts`.
 - Deferred honestly: staff moderation queue and actions (warn/suspend/ban/restore, audit logging) = Phase 8; real identity verification = later (nothing is shown as "verified" until a real process exists).
+
+
+## Phase 8 - Admin and moderation (built, core)
+- `/admin` (staff only; everyone else gets a 404): Overview, Reports queue (underage first) + detail with photos, Flags, People search/overview, Audit log, Staff roles.
+- Roles checked in the DATABASE on every function (and again in the server): `admin` = Super Admin (everything incl. ban, audit log, staff roles); `moderator` = reports, flags, profiles, warn/suspend/restore; `support` = look people up (name or exact email, no bio/photos); `finance` = reserved for Phase 7.
+- Every moderation action requires a written reason and is written to the append-only `audit_logs`. Reading a reported conversation is an explicit click, limited to that conversation, and audited.
+- Suspended/banned people are removed from discovery, matches and messaging and see a plain notice; warnings are shown in the app until acknowledged. Staff cannot be moderated by moderators and cannot change their own role.
+- Tests: `supabase/tests/rls_admin.sql` (30 checks, all true live).
+- First Super Admin must be created by the owner in the SQL Editor: `insert into public.admin_roles (user_id, role) select id, 'admin' from auth.users where email = 'YOUR_EMAIL';` (the account must exist).
+- Not built yet (honest): verification review, payments/subscriptions views (Phase 7), analytics beyond the overview counts, locations editor, "restrict" as a separate state, appeals workflow, push/email to warned people.

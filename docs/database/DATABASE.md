@@ -64,3 +64,7 @@ Tables: `matches` (ordered pair, trigger-created), `match_participants` (seen/re
 
 ## Phase 6 additions
 Tables `reports` (+ enums `report_category`, `report_status`) and `safety_flags`: RLS on, no client grants. Functions `report_user`, `record_message_flag`, `my_blocked`.
+
+
+## Phase 8 additions
+Enum `admin_role` now: moderator, admin (Super Admin), support, finance. Table `user_warnings`. Helpers `staff_has`, `staff_role` (callable), `require_staff`, `write_audit` (internal only). Staff functions: `admin_stats`, `admin_report_queue`, `admin_report_detail`, `admin_set_report_status`, `admin_report_messages` (audited), `admin_find_user`, `admin_user_overview`, `admin_set_account_status`, `admin_warn_user`, `admin_flags_queue`, `admin_review_flag`, `admin_audit_log`, `admin_list_staff`, `admin_set_staff_role`. Storage policy `profile_photos_read_staff`.

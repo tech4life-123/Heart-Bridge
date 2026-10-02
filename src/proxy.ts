@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
 
 /** Routes that require a signed-in user. Pages ALSO re-check on the server. */
-const PROTECTED_PREFIXES = ["/app"];
+const PROTECTED_PREFIXES = ["/app", "/admin"];
 /** Routes a signed-in user has no reason to visit. */
 const GUEST_ONLY_ROUTES = ["/login", "/signup", "/forgot-password"];
 
