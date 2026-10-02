@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/* HeartBridge design tokens. Warm, trustworthy, restrained. */
+:root {
+  --hb-cream: #fff8f2;
+  --hb-sand: #f3e6da;
+  --hb-ink: #2a1b22;
+  --hb-muted: #6b5560;
+  --hb-rose: #c93a5b;
+  --hb-rose-dark: #9f2a45;
+  --hb-gold: #e0a526;
+  --hb-leaf: #2f7d5b;
+  --hb-danger: #b42318;
+}
+
+@theme inline {
+  --color-cream: var(--hb-cream);
+  --color-sand: var(--hb-sand);
+  --color-ink: var(--hb-ink);
+  --color-muted: var(--hb-muted);
+  --color-rose: var(--hb-rose);
+  --color-rose-dark: var(--hb-rose-dark);
+  --color-gold: var(--hb-gold);
+  --color-leaf: var(--hb-leaf);
+  --color-danger: var(--hb-danger);
+  /* System fonts: zero font download on slow mobile connections. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+}
+
+body {
+  background: var(--hb-cream);
+  color: var(--hb-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--hb-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
