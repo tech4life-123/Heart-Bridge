@@ -1,35 +1,34 @@
 # Project status
 
-**Current phase:** 1 (Foundation), code complete. Stopped at the Phase 1 boundary.
+**Current phase:** 1 (Foundation) complete. Stopped at the Phase 1 boundary.
 
 ## Completed
 
 - Next.js 16 + React 19 + TypeScript + Tailwind 4 app, mobile-first, system fonts
 - HeartBridge identity: heart-and-bridge logo mark (SVG), warm rose/gold/cream palette, favicon/manifest
 - Landing page (how it works, safety/privacy, CTAs), `/safety` community rules and tips
-- Email auth: sign up (with 18+ DOB and confirmation checkbox), sign in, sign out, forgot/reset password, email-link confirmation, protected `/app`
+- Email auth: sign up (18+ DOB + confirmation checkbox), sign in, sign out, forgot/reset password, email-link confirmation (supports default `code` and custom `token_hash` links), protected `/app`
 - Supabase integration (server client, session proxy), validated environment config
-- Database foundation migration with RLS: `profiles`, `user_settings`, `admin_roles`, `app_settings`, `audit_logs`
+- Database foundation applied to the live Supabase project "Heart Bridge": `profiles`, `user_settings`, `admin_roles`, `app_settings`, `audit_logs`, all with RLS
+- Old empty prototype tables (`profiles`, `matches`, `messages`, 0 rows, 0 users) removed by the owner; replaced by the normalized schema
 - Owner-controlled launch config (FREE mode, 100-user limit, subscriptions off), nothing hard-coded
 - Security headers, error mapping, structured logging, open-redirect protection
 - Docs: README, ARCHITECTURE, SECURITY, ROADMAP, database doc, ADR
 
-## Verification (run locally)
+## Verification
 
-- `npm run lint`: pass
-- `npm run typecheck`: pass
+Done:
+- `npm run lint`, `npm run typecheck`: pass
 - `npm test`: 30/30 pass (age rule, schemas, redirects, error mapping, launch config)
-- `npm run build`: pass (14 routes)
+- `npm run build` against the real project env: pass (14 routes)
+- Running production server smoke test: landing/auth/safety/robots/manifest return 200; `/app` redirects to `/login` when signed out; `/reset-password` and bogus or open-redirect confirm links redirect safely to `/login`; security headers present
+- Live database inspected read-only: grants, column-level update grants, policies and triggers match the design (anon can only read the 3 public launch settings; users can read own rows and edit only `first_name` and their privacy/notification toggles; `admin_roles` has no client access)
+- Supabase security advisor: no errors. Warnings are accepted (see SECURITY.md)
 
-## Not yet verified
-
-- **The migration has not been applied to a database**, so RLS and the signup trigger are untested against Postgres. No Heart Bridge Supabase project exists yet.
-- Auth flows are untested end to end (need a Supabase project with email configured).
-- No visual or device testing yet (no browser pass in this session).
-
-## Files
-
-`src/app/*` (landing, safety, auth pages, `/app`, robots, sitemap, manifest, icon), `src/features/auth/*`, `src/components/*`, `src/config/*`, `src/lib/*`, `src/proxy.ts`, `supabase/migrations/20261002000000_foundation.sql`, `docs/*`, root docs.
+Not yet verified:
+- **Behavioural RLS test** (signed-in user A vs B, under-18 signup rejection, admin escalation attempts, audit immutability). A transactional test script was prepared but the run was cancelled. Run it before launch.
+- **End-to-end auth** (real signup, email delivery, confirmation, reset): requires Supabase email settings and a deployed or local URL reachable from a browser.
+- No visual or device testing.
 
 ## Known limitations
 
@@ -37,11 +36,12 @@ See SECURITY.md "Known gaps". No profile editing, photos, discovery or chat yet 
 
 ## Next phase
 
-Phase 2 (Profiles), after the migration is applied and RLS is verified.
+Phase 2 (Profiles): profile fields, photos, preferences, onboarding.
 
 ## Unresolved decisions
 
-1. Which Supabase project to use (create a new one; may incur cost).
-2. Production domain and Vercel project.
-3. Whether to add phone auth later, and which SMS provider.
-4. Terms of Service and Privacy Policy text (legal review).
+1. Vercel project and production domain.
+2. Custom SMTP provider for auth emails (free tier sender is heavily rate-limited).
+3. Whether to disable the unused `pg_graphql` extension (hides table names from the public schema).
+4. Phone auth later, and which SMS provider.
+5. Terms of Service and Privacy Policy text (legal review).

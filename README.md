@@ -31,12 +31,12 @@ Never commit `.env.local`. Missing or invalid variables fail fast with a clear e
 
 1. Create a Supabase project.
 2. Apply `supabase/migrations/*.sql` in order (SQL editor, or `supabase db push` with the CLI).
-3. Authentication > URL Configuration: set **Site URL** to `NEXT_PUBLIC_SITE_URL` and add `<site>/auth/confirm` to Redirect URLs.
-4. Authentication > Email Templates: change the **Confirm signup** and **Reset password** links to
-   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup&next=/app` and
-   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password`.
+3. Authentication > URL Configuration: set **Site URL** to `NEXT_PUBLIC_SITE_URL` and add `<site>/auth/confirm` (and `http://localhost:3000/auth/confirm` for local dev) to Redirect URLs.
+4. Email templates: the default Supabase templates work as-is (the `/auth/confirm` route accepts both the default `code` links and custom `token_hash` links).
 5. Keep **Confirm email** enabled.
 6. Copy the URL and anon key into `.env.local`.
+
+> Free-tier note: Supabase's built-in email sender is heavily rate-limited (a few emails per hour). For real users, configure a custom SMTP provider (Authentication > SMTP Settings) before launch.
 
 ### Creating the first admin
 

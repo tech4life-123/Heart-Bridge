@@ -31,3 +31,13 @@
 - **Upload security** (type/size checks, private buckets): Phase 2.
 - **Terms of Service and Privacy Policy** must be written and reviewed by a legal professional before public launch.
 - **RLS behavioural tests** against a live database: pending a Supabase project (see PROJECT_STATUS.md).
+
+## Supabase advisor findings (accepted)
+
+- `admin_roles` has RLS but no policy: intentional deny-all; only `is_admin()` reads it.
+- `is_admin()` is executable by signed-in users: intentional; RLS policies call it as the caller and it only answers for the caller's own account.
+- Tables appear in the GraphQL schema (names only; RLS still blocks data): the app does not use GraphQL. Consider disabling the `pg_graphql` extension.
+
+## Behavioural RLS tests
+
+`supabase/tests/rls_foundation.sql` runs 34 checks in a transaction that always rolls back. Run it in the SQL Editor after every schema change; every result must be `true`.
