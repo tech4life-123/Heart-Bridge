@@ -1,0 +1,11 @@
+"use client";
+
+import { createBrowserClient } from "@supabase/ssr";
+import { getPublicEnv } from "@/lib/env";
+import type { Database } from "@/types/database";
+
+/** Browser client: used only for Realtime and tiny counters. All rules are still enforced by RLS. */
+export function createBrowserSupabase() {
+  const env = getPublicEnv();
+  return createBrowserClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}

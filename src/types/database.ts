@@ -258,8 +258,7 @@ export type Database = {
           account_status: Database["public"]["Enums"]["account_status"];
           bio: string | null;
           children_preference:
-            | Database["public"]["Enums"]["children_preference"]
-            | null;
+            Database["public"]["Enums"]["children_preference"] | null;
           city_id: string | null;
           city_other: string | null;
           community_id: string | null;
@@ -272,8 +271,7 @@ export type Database = {
           gender: Database["public"]["Enums"]["gender"] | null;
           id: string;
           intention_primary:
-            | Database["public"]["Enums"]["relationship_intention"]
-            | null;
+            Database["public"]["Enums"]["relationship_intention"] | null;
           intentions_extra: Database["public"]["Enums"]["relationship_intention"][];
           languages: string[];
           occupation: string | null;
@@ -287,8 +285,7 @@ export type Database = {
           account_status?: Database["public"]["Enums"]["account_status"];
           bio?: string | null;
           children_preference?:
-            | Database["public"]["Enums"]["children_preference"]
-            | null;
+            Database["public"]["Enums"]["children_preference"] | null;
           city_id?: string | null;
           city_other?: string | null;
           community_id?: string | null;
@@ -301,8 +298,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null;
           id: string;
           intention_primary?:
-            | Database["public"]["Enums"]["relationship_intention"]
-            | null;
+            Database["public"]["Enums"]["relationship_intention"] | null;
           intentions_extra?: Database["public"]["Enums"]["relationship_intention"][];
           languages?: string[];
           occupation?: string | null;
@@ -316,8 +312,7 @@ export type Database = {
           account_status?: Database["public"]["Enums"]["account_status"];
           bio?: string | null;
           children_preference?:
-            | Database["public"]["Enums"]["children_preference"]
-            | null;
+            Database["public"]["Enums"]["children_preference"] | null;
           city_id?: string | null;
           city_other?: string | null;
           community_id?: string | null;
@@ -330,8 +325,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: string;
           intention_primary?:
-            | Database["public"]["Enums"]["relationship_intention"]
-            | null;
+            Database["public"]["Enums"]["relationship_intention"] | null;
           intentions_extra?: Database["public"]["Enums"]["relationship_intention"][];
           languages?: string[];
           occupation?: string | null;
@@ -453,7 +447,22 @@ export type Database = {
           blocker_id?: string;
           created_at?: string;
         };
-        Relationships: [{ foreignKeyName: "blocks_blocked_id_fkey"; columns: ["blocked_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "blocks_blocker_id_fkey"; columns: ["blocker_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+        Relationships: [
+          {
+            foreignKeyName: "blocks_blocked_id_fkey";
+            columns: ["blocked_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "blocks_blocker_id_fkey";
+            columns: ["blocker_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       likes: {
         Row: {
@@ -471,7 +480,86 @@ export type Database = {
           liked_id?: string;
           liker_id?: string;
         };
-        Relationships: [{ foreignKeyName: "likes_liked_id_fkey"; columns: ["liked_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "likes_liker_id_fkey"; columns: ["liker_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+        Relationships: [
+          {
+            foreignKeyName: "likes_liked_id_fkey";
+            columns: ["liked_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "likes_liker_id_fkey";
+            columns: ["liker_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      matches: {
+        Row: { created_at: string; id: string; user_a: string; user_b: string };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          user_a: string;
+          user_b: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          user_a?: string;
+          user_b?: string;
+        };
+        Relationships: [];
+      };
+      match_participants: {
+        Row: {
+          hidden_at: string | null;
+          last_read_at: string | null;
+          match_id: string;
+          seen_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          hidden_at?: string | null;
+          last_read_at?: string | null;
+          match_id: string;
+          seen_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          hidden_at?: string | null;
+          last_read_at?: string | null;
+          match_id?: string;
+          seen_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      messages: {
+        Row: {
+          body: string;
+          created_at: string;
+          id: string;
+          match_id: string;
+          sender_id: string;
+        };
+        Insert: {
+          body: string;
+          created_at?: string;
+          id?: string;
+          match_id: string;
+          sender_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          id?: string;
+          match_id?: string;
+          sender_id?: string;
+        };
+        Relationships: [];
       };
       passes: {
         Row: {
@@ -489,7 +577,22 @@ export type Database = {
           target_id?: string;
           user_id?: string;
         };
-        Relationships: [{ foreignKeyName: "passes_target_id_fkey"; columns: ["target_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "passes_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+        Relationships: [
+          {
+            foreignKeyName: "passes_target_id_fkey";
+            columns: ["target_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "passes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       saved_profiles: {
         Row: {
@@ -507,7 +610,22 @@ export type Database = {
           saved_id?: string;
           user_id?: string;
         };
-        Relationships: [{ foreignKeyName: "saved_profiles_saved_id_fkey"; columns: ["saved_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }, { foreignKeyName: "saved_profiles_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+        Relationships: [
+          {
+            foreignKeyName: "saved_profiles_saved_id_fkey";
+            columns: ["saved_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "saved_profiles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       compatibility_answers: {
         Row: {
@@ -528,7 +646,22 @@ export type Database = {
           user_id?: string;
           value?: number;
         };
-        Relationships: [{ foreignKeyName: "compatibility_answers_question_id_fkey"; columns: ["question_id"]; isOneToOne: false; referencedRelation: "compatibility_questions"; referencedColumns: ["id"] }, { foreignKeyName: "compatibility_answers_user_id_fkey"; columns: ["user_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }];
+        Relationships: [
+          {
+            foreignKeyName: "compatibility_answers_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_questions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_answers_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       compatibility_questions: {
         Row: {
@@ -608,6 +741,49 @@ export type Database = {
     };
     Functions: {
       complete_onboarding: { Args: never; Returns: undefined };
+      are_matched: { Args: { p_other: string }; Returns: boolean };
+      match_id_with: { Args: { p_other: string }; Returns: string };
+      my_matches: {
+        Args: never;
+        Returns: {
+          match_id: string;
+          matched_at: string;
+          other_id: string;
+          first_name: string;
+          age: number;
+          photo_path: string | null;
+          last_body: string | null;
+          last_at: string | null;
+          last_sender: string | null;
+          unread: number;
+          is_new: boolean;
+        }[];
+      };
+      chat_meta: {
+        Args: { p_match_id: string };
+        Returns: {
+          other_id: string;
+          first_name: string;
+          age: number;
+          photo_path: string | null;
+          other_last_read_at: string | null;
+          can_message: boolean;
+        }[];
+      };
+      unread_summary: {
+        Args: never;
+        Returns: { unread_messages: number; new_matches: number }[];
+      };
+      send_message: {
+        Args: { p_match_id: string; p_body: string };
+        Returns: string;
+      };
+      mark_conversation_read: {
+        Args: { p_match_id: string };
+        Returns: undefined;
+      };
+      mark_match_seen: { Args: { p_match_id: string }; Returns: undefined };
+      hide_conversation: { Args: { p_match_id: string }; Returns: undefined };
       age_years: { Args: { d: string }; Returns: number };
       can_view_profile: { Args: { p_target: string }; Returns: boolean };
       discover_profiles: {
@@ -627,12 +803,22 @@ export type Database = {
           p_smoking?: Database["public"]["Enums"]["habit_frequency"][];
         };
         Returns: Database["public"]["CompositeTypes"]["profile_card"][];
-        SetofOptions: { from: "*"; to: "profile_card"; isOneToOne: false; isSetofReturn: true };
+        SetofOptions: {
+          from: "*";
+          to: "profile_card";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
       };
       profile_cards: {
         Args: { p_ids: string[] };
         Returns: Database["public"]["CompositeTypes"]["profile_card"][];
-        SetofOptions: { from: "*"; to: "profile_card"; isOneToOne: false; isSetofReturn: true };
+        SetofOptions: {
+          from: "*";
+          to: "profile_card";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
       };
       delete_profile_photo: { Args: { p_photo_id: string }; Returns: string };
       is_admin: { Args: never; Returns: boolean };
@@ -669,9 +855,12 @@ export type Database = {
         languages: string[] | null;
         smoking: Database["public"]["Enums"]["habit_frequency"] | null;
         drinking: Database["public"]["Enums"]["habit_frequency"] | null;
-        children_preference: Database["public"]["Enums"]["children_preference"] | null;
-        intention_primary: Database["public"]["Enums"]["relationship_intention"] | null;
-        intentions_extra: Database["public"]["Enums"]["relationship_intention"][] | null;
+        children_preference:
+          Database["public"]["Enums"]["children_preference"] | null;
+        intention_primary:
+          Database["public"]["Enums"]["relationship_intention"] | null;
+        intentions_extra:
+          Database["public"]["Enums"]["relationship_intention"][] | null;
         place: string | null;
         proximity: number | null;
         interest_ids: string[] | null;
@@ -690,4 +879,5 @@ export type Enums<T extends keyof Database["public"]["Enums"]> =
   Database["public"]["Enums"][T];
 export type Row<T extends keyof Database["public"]["Tables"]> =
   Database["public"]["Tables"][T]["Row"];
-export type ProfileCardRow = Database["public"]["CompositeTypes"]["profile_card"];
+export type ProfileCardRow =
+  Database["public"]["CompositeTypes"]["profile_card"];

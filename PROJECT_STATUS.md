@@ -79,3 +79,12 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Phone + OTP needs an SMS provider (Supabase phone auth with e.g. Twilio, or a Liberia-capable gateway). Nothing is faked: email/password stays the working method until an SMS provider is configured.
 - The database must be extended toward the v2 table list (locations, interests, preferences, compatibility, likes, matches, conversations, messages, blocks, reports, verifications, subscriptions, payments, notifications, safety flags, admin roles incl. moderator/support/finance). Existing `profiles`, `user_settings`, `admin_roles`, `app_settings`, `audit_logs` are kept and extended by migration.
 - Landing copy describes safety and matching features (block/report, moderation, compatibility) that are built in later phases. Do not promote the site publicly until those exist.
+
+
+## Phase 5 - Matching and chat (built)
+- Mutual like -> match created by a database trigger (also backfilled for existing mutual likes). "It's a Match!" screen at `/app/matches/[id]`; list at `/app/matches`; chat at `/app/messages/[id]`.
+- Only matched people can read a match or its messages; messages are written only through `send_message()` (match, block, account-status checks; max 20/min and 1000/day; 1-2000 chars).
+- Read/unread counters, "Seen" marker, typing indicator (private Realtime broadcast `typing:<match>`), live new-message and new-match updates (Realtime + RLS), delete conversation from own view only (new messages bring it back without old history).
+- Blocks (table from Phase 4) already end messaging and hide the match; block/report UI is Phase 6.
+- Tests: `supabase/tests/rls_matching.sql` (32 checks, all true live).
+- Not yet: push/email notifications, unmatch button, report/block buttons (Phase 6), message attachments (not planned).

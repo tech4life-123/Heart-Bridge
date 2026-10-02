@@ -50,6 +50,10 @@ export async function cardAction(_prev: CardState, fd: FormData): Promise<CardSt
       return { error: GENERIC_ERROR };
     }
     refresh();
+    revalidatePath("/app/matches");
+    // A mutual like becomes a match inside the database; send the person to the match screen.
+    const { data: matchId } = await supabase.rpc("match_id_with", { p_other: id });
+    if (matchId) redirect(`/app/matches/${matchId}`);
     return { ok: true, done: "like", message: "Like sent." };
   }
 

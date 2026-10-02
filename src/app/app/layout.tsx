@@ -5,6 +5,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { Logo } from "@/components/Logo";
 import { buttonStyles } from "@/components/ui/button-styles";
 import { signOutAction } from "@/features/auth/actions";
+import { loadUnread } from "@/features/matching/queries";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -16,6 +17,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/app");
+
+  const unread = await loadUnread(supabase);
 
   return (
     <>
@@ -30,7 +33,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </form>
       </header>
       <main className="mx-auto w-full max-w-2xl px-5 pb-28 pt-2">{children}</main>
-      <BottomNav />
+      <BottomNav userId={user.id} initialCount={unread.unread + unread.newMatches} />
     </>
   );
 }
