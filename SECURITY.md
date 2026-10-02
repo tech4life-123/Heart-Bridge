@@ -30,7 +30,7 @@
 - **Suspended/banned enforcement** at sign-in and in RLS: Phase 5.
 - **Upload security** (type/size checks, private buckets): Phase 2.
 - **Terms of Service and Privacy Policy** must be written and reviewed by a legal professional before public launch.
-- **RLS behavioural tests** against a live database: pending a Supabase project (see PROJECT_STATUS.md).
+- **RLS behavioural tests** against the live database: script is ready (`supabase/tests/rls_foundation.sql`) but has not been run yet.
 
 ## Supabase advisor findings (accepted)
 
