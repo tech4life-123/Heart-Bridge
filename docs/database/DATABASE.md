@@ -79,3 +79,5 @@ Table `account_appeals` (no client grants). Functions: `submit_appeal`, `my_appe
 
 ## Feedback additions
 Enums `feedback_category`, `feedback_status`. Table `feedback` (no client grants). Functions `submit_feedback`, `admin_feedback_queue`, `admin_set_feedback_status`, `admin_feedback_summary`.
+
+Migration `20261003020000_notifications.sql`: `notification_settings`, `notification_outbox` (no client grants), triggers that queue emails, worker functions `outbox_claim`/`outbox_finish` (guarded by `app_settings.notify_secret`), member functions `my_notification_settings`/`set_notification_settings`. `20261003030000_notifications_schedule.sql` installs pg_cron + pg_net and the 5-minute job.

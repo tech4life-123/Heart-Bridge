@@ -30,6 +30,7 @@ export default async function MyProfilePage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/app/profile");
 
+  const { data: staffRole } = await supabase.rpc("staff_role");
   const [bundle, locations, interests] = await Promise.all([
     getProfileBundle(supabase, user.id),
     getLocations(supabase),
@@ -96,6 +97,28 @@ export default async function MyProfilePage() {
               className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 hover:bg-surface-2"
             >
               <span>Bio helper (AI, optional)</span>
+              <span aria-hidden className="text-gold">
+                ›
+              </span>
+            </Link>
+          </li>
+          {staffRole && (
+            <li>
+              <Link
+                href="/admin"
+                className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 font-semibold text-gold hover:bg-surface-2"
+              >
+                <span>Staff area</span>
+                <span aria-hidden>›</span>
+              </Link>
+            </li>
+          )}
+          <li>
+            <Link
+              href="/app/profile/notifications"
+              className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 hover:bg-surface-2"
+            >
+              <span>Email notifications</span>
               <span aria-hidden className="text-gold">
                 ›
               </span>

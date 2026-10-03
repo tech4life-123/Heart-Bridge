@@ -142,3 +142,11 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Staff inbox `/admin/feedback` (moderator, support, Super Admin): New / Reviewed / Done tabs, average rating, status changes audited. Finance cannot read it.
 - Database: table `feedback` (no client grants), `submit_feedback`, `admin_feedback_queue`, `admin_set_feedback_status`, `admin_feedback_summary`. Test `supabase/tests/rls_feedback.sql` (12 checks, all true live). Privacy Policy mentions feedback.
 - Not built: replying to a member from the inbox, email alerts for new feedback (waits for the email sender).
+
+## Email notifications (built 3 Oct 2026)
+- DB outbox with triggers (new match, new message, payment result, appeal result). Message emails wait 10 minutes, are limited to one per chat until read, and are skipped if the member read it, opted out, was blocked, or is not active. Emails never contain message text.
+- Worker: `/api/cron/notify` (bearer secret `NOTIFY_SECRET`, timing-safe, 404 otherwise). Called every 5 minutes by Supabase pg_cron + pg_net (`heartbridge-notify`). Without `BREVO_API_KEY` it claims nothing and sends nothing.
+- Members control match/message emails at `/app/profile/notifications`. Account, payment and appeal emails are always sent.
+- Test: `supabase/tests/rls_notifications.sql` (12, all true live).
+- Owner to do: add `BREVO_API_KEY` (Brevo API key, `xkeysib-...`) in Vercel and redeploy. Gmail sender is test-only; verify a real domain before launch.
+- Still not built: web push notifications (needs VAPID keys, service worker, permission flow).

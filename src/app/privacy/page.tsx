@@ -45,6 +45,15 @@ export default function PrivacyPage() {
               as a one-way hash by our sign-in provider, never readable by us),
               first name and date of birth. You must be 18 or older.
             </span>,
+            <span key="email">
+              <strong>Emails we send:</strong> sign-in and password emails,
+              notices about payments and appeals, and, unless you turn them off
+              in your profile, a short email for a new match or an unread
+              message. These emails contain your first name and the other
+              person&apos;s first name only. They never contain message text,
+              photos or profile details. They are delivered through our email
+              provider, which sees your email address for that purpose.
+            </span>,
             <span key="b">
               <strong>Profile you choose to write:</strong> bio, work and
               education, languages, lifestyle answers, interests, what you are

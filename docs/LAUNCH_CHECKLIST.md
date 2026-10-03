@@ -34,4 +34,6 @@ Status key: DONE = verified by tests/inspection, YOU = needs the owner, LATER = 
 14. To enable AI: add `ANTHROPIC_API_KEY` in Vercel (optionally `AI_MODEL`, `AI_SAFETY_ENABLED=true`), redeploy, and set a spending limit in the Anthropic console.
 
 ## Later
-- Phone OTP login (needs an SMS budget), real identity verification, push/email notifications, nonce-based CSP, automated browser end-to-end tests with a test Supabase project, analytics/monitoring (e.g. Vercel Analytics, error reporting).
+- Phone OTP login (needs an SMS budget), real identity verification, web push notifications, nonce-based CSP, automated browser end-to-end tests with a test Supabase project, analytics/monitoring (e.g. Vercel Analytics, error reporting).
+
+- Add `BREVO_API_KEY` (Brevo API key, not SMTP key) to Vercel for notification emails; verify a sending domain (Gmail senders may be dropped).
