@@ -12,7 +12,12 @@ declare
   res jsonb := '{}'::jsonb;
   n int;
   ok boolean;
+  base_profiles int;
+  base_audit int;
 begin
+  -- The test must also pass on a database that already has real members and audit entries.
+  select count(*) into base_profiles from public.profiles;
+  select count(*) into base_audit from public.audit_logs where action = 'app_setting.updated';
   -- Signup trigger
   insert into auth.users (id, aud, role, email, raw_user_meta_data) values
     (a, 'authenticated', 'authenticated', 'a@test.invalid', '{"first_name":"Ama","date_of_birth":"1995-05-20"}'),
@@ -146,12 +151,12 @@ begin
   select public.is_admin() into ok;
   res := res || jsonb_build_object('26 admin recognised', ok);
   select count(*) into n from public.profiles;
-  res := res || jsonb_build_object('27 admin can see all profiles', n = 3);
+  res := res || jsonb_build_object('27 admin can see all profiles', n = base_profiles + 3);
   update public.app_settings set value = '"PAID"' where key = 'launch_mode';
   get diagnostics n = row_count;
   res := res || jsonb_build_object('28 admin can change settings', n = 1);
   select count(*) into n from public.audit_logs where action = 'app_setting.updated';
-  res := res || jsonb_build_object('29 admin sees the audit entry', n = 1);
+  res := res || jsonb_build_object('29 admin sees the audit entry', n = base_audit + 1);
   ok := false;
   begin update public.app_settings set is_public = false where key = 'launch_mode';
   exception when insufficient_privilege then ok := true; end;
@@ -171,7 +176,7 @@ begin
   -- Deleting a user who appears in the audit log must still work
   delete from auth.users where id = a;
   select count(*) into n from public.audit_logs where action = 'app_setting.updated' and actor_id is null;
-  res := res || jsonb_build_object('33 deleting an audited user anonymises log, not blocked', n = 1);
+  res := res || jsonb_build_object('33 deleting an audited user anonymises log, not blocked', n >= 1);
   select count(*) into n from public.profiles where id = a;
   res := res || jsonb_build_object('34 profile cascades on user delete', n = 0);
 
