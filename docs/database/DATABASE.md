@@ -76,3 +76,6 @@ Enums `payment_provider` (orange_money, lonestar_momo, card) and `payment_status
 
 ## Admin extras additions
 Table `account_appeals` (no client grants). Functions: `submit_appeal`, `my_appeal`, `admin_appeals_queue`, `admin_review_appeal`, `admin_list_locations`, `admin_save_location`, `admin_analytics`, `admin_report_breakdown`, `admin_revenue`, `admin_premium_count`.
+
+## Feedback additions
+Enums `feedback_category`, `feedback_status`. Table `feedback` (no client grants). Functions `submit_feedback`, `admin_feedback_queue`, `admin_set_feedback_status`, `admin_feedback_summary`.

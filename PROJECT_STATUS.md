@@ -136,3 +136,9 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Tests: `supabase/tests/rls_extras.sql` (25 checks, all true live).
 - **Privacy Policy and Terms** rewritten (security-first, accurate to what the app really does). Still need lawyer review. Set `NEXT_PUBLIC_SUPPORT_EMAIL` once you have a monitored support address; until then the pages point to "the support contact shown in the app".
 - Not built (honest): push/email notifications (need a sender address/domain and provider keys), identity verification review, a "pause my profile" switch (the database supports it, the screen does not exist yet).
+
+## Member feedback (built)
+- Members: Profile > Send feedback (`/app/feedback`): type (idea, bug, praise, other), message 10-1000 chars, optional 1-5 rating, page they came from. Limit 5 a day. A note tells them reports about people go through Report, not here.
+- Staff inbox `/admin/feedback` (moderator, support, Super Admin): New / Reviewed / Done tabs, average rating, status changes audited. Finance cannot read it.
+- Database: table `feedback` (no client grants), `submit_feedback`, `admin_feedback_queue`, `admin_set_feedback_status`, `admin_feedback_summary`. Test `supabase/tests/rls_feedback.sql` (12 checks, all true live). Privacy Policy mentions feedback.
+- Not built: replying to a member from the inbox, email alerts for new feedback (waits for the email sender).

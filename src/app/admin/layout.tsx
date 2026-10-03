@@ -22,6 +22,11 @@ export default async function AdminLayout({
       label: "People",
       roles: ["moderator", "admin", "support"],
     },
+    {
+      href: "/admin/feedback",
+      label: "Feedback",
+      roles: ["moderator", "admin", "support"],
+    },
     { href: "/admin/appeals", label: "Appeals", roles: ["moderator", "admin"] },
     {
       href: "/admin/analytics",

@@ -103,6 +103,17 @@ export default async function MyProfilePage() {
           </li>
           <li>
             <Link
+              href="/app/feedback"
+              className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 hover:bg-surface-2"
+            >
+              <span>Send feedback</span>
+              <span aria-hidden className="text-gold">
+                ›
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/app/premium"
               className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 hover:bg-surface-2"
             >

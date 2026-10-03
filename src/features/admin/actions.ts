@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { logger } from "@/lib/logger";
-import { FINANCE, MODERATION, SUPER, requireStaff } from "./guard";
+import { FINANCE, MODERATION, PEOPLE, SUPER, requireStaff } from "./guard";
 
 const back = z
   .string()
@@ -232,4 +232,27 @@ export async function saveLocationAction(fd: FormData): Promise<void> {
     go(path, "error");
   }
   go(path, "done");
+}
+
+const feedbackSchema = z.object({
+  id: z.uuid(),
+  status: z.enum(["new", "reviewed", "done"]),
+  tab: z.enum(["new", "reviewed", "done"]).default("new"),
+});
+
+export async function setFeedbackStatusAction(fd: FormData): Promise<void> {
+  const parsed = feedbackSchema.safeParse(Object.fromEntries(fd));
+  if (!parsed.success) go("/admin/feedback", "error");
+  const path = `/admin/feedback?status=${parsed.data.tab}`;
+  const { supabase } = await requireStaff("/admin/feedback", PEOPLE);
+  const { error } = await supabase.rpc("admin_set_feedback_status", {
+    p_id: parsed.data.id,
+    p_status: parsed.data.status,
+  });
+  if (error) {
+    logger.error("admin.feedback_status_failed", { code: error.code });
+    go("/admin/feedback", "error");
+  }
+  revalidatePath("/admin", "layout");
+  redirect(path);
 }
