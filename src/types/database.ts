@@ -945,6 +945,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      delete_my_account: { Args: never; Returns: undefined };
       are_matched: { Args: { p_other: string }; Returns: boolean };
       match_id_with: { Args: { p_other: string }; Returns: string };
       my_matches: {

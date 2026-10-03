@@ -74,6 +74,15 @@ export default async function MyProfilePage() {
               <span aria-hidden className="text-gold">›</span>
             </Link>
           </li>
+          <li>
+            <Link
+              href="/app/profile/delete"
+              className="flex min-h-12 items-center justify-between gap-3 rounded-xl px-2 text-danger hover:bg-surface-2"
+            >
+              <span>Delete my account</span>
+              <span aria-hidden>›</span>
+            </Link>
+          </li>
         </ul>
       </section>
 

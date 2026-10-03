@@ -105,3 +105,9 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Tests: `supabase/tests/rls_admin.sql` (30 checks, all true live).
 - First Super Admin must be created by the owner in the SQL Editor: `insert into public.admin_roles (user_id, role) select id, 'admin' from auth.users where email = 'YOUR_EMAIL';` (the account must exist).
 - Not built yet (honest): verification review, payments/subscriptions views (Phase 7), analytics beyond the overview counts, locations editor, "restrict" as a separate state, appeals workflow, push/email to warned people.
+
+
+## Phase 10 - Production hardening (done, see docs/LAUNCH_CHECKLIST.md)
+- Added: Content-Security-Policy, error/not-found/loading pages, `/api/health`, Privacy and Terms drafts (footer + signup links), self-service account deletion (screen, photo cleanup, refused while a safety review is open or for staff), 9 covering indexes for foreign keys (advisor findings), full dependency audit (0 vulnerabilities).
+- Next.js 16 note: error boundaries receive `retry`, not `reset`.
+- Owner actions remain (SQL for delete function, auth URLs, SMTP, backups, two-account phone test, legal review): see the checklist.

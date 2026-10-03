@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { Field } from "@/components/ui/Field";
@@ -71,6 +72,11 @@ export function SignUpForm() {
         )}
       </div>
       <SubmitButton pendingText="Creating account…">Join HeartBridge</SubmitButton>
+      <p className="text-center text-sm text-muted">
+        By joining you agree to our{" "}
+        <Link href="/terms" className="underline">Terms</Link> and{" "}
+        <Link href="/privacy" className="underline">Privacy</Link>.
+      </p>
     </form>
   );
 }

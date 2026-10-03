@@ -263,6 +263,12 @@ export default function HomePage() {
             <Link href="/safety" className="underline">
               Safety
             </Link>
+            <Link href="/privacy" className="underline">
+              Privacy
+            </Link>
+            <Link href="/terms" className="underline">
+              Terms
+            </Link>
             <a href="#how" className="underline">
               How it works
             </a>
