@@ -170,3 +170,66 @@ export async function refundPaymentAction(fd: FormData): Promise<void> {
   }
   go(path, "done");
 }
+
+const appealSchema = z.object({
+  id: z.uuid(),
+  decision: z.enum(["granted", "denied"]),
+  note: z.string().trim().min(5).max(500),
+});
+
+/** Decide an appeal. Granting restores the account; lifting a ban needs a Super Admin (checked in the database). */
+export async function reviewAppealAction(fd: FormData): Promise<void> {
+  const parsed = appealSchema.safeParse(Object.fromEntries(fd));
+  const path = "/admin/appeals";
+  if (!parsed.success) go(path, "error");
+  const { supabase } = await requireStaff(path, MODERATION);
+  const { error } = await supabase.rpc("admin_review_appeal", {
+    p_id: parsed.data.id,
+    p_decision: parsed.data.decision,
+    p_note: parsed.data.note,
+  });
+  if (error) {
+    logger.error("admin.appeal_review_failed", { code: error.code });
+    go(path, "error");
+  }
+  go(path, "done");
+}
+
+const locationSchema = z.object({
+  id: z.uuid().optional(),
+  parent: z.uuid().optional(),
+  kind: z.enum(["country", "region", "city", "community"]),
+  name: z.string().trim().min(1).max(80),
+  slug: z.string().trim().min(1).max(80),
+  sort: z.coerce.number().int().min(0).max(10000).default(0),
+  active: z.enum(["on", "off"]).default("on"),
+});
+
+/** Add or edit a place (Super Admin). Places are switched off, never removed, so profiles keep valid locations. */
+export async function saveLocationAction(fd: FormData): Promise<void> {
+  const raw = Object.fromEntries(fd);
+  const parsed = locationSchema.safeParse({
+    ...raw,
+    id: raw.id || undefined,
+    parent: raw.parent || undefined,
+    active: fd.get("active") === "on" ? "on" : "off",
+  });
+  const path = "/admin/locations";
+  if (!parsed.success) go(path, "error");
+  const { supabase } = await requireStaff(path, SUPER);
+  const l = parsed.data;
+  const { error } = await supabase.rpc("admin_save_location", {
+    p_id: (l.id ?? null) as unknown as string,
+    p_parent: (l.parent ?? null) as unknown as string,
+    p_kind: l.kind,
+    p_name: l.name,
+    p_slug: l.slug,
+    p_sort: l.sort,
+    p_active: l.active === "on",
+  });
+  if (error) {
+    logger.error("admin.location_save_failed", { code: error.code });
+    go(path, "error");
+  }
+  go(path, "done");
+}

@@ -15,6 +15,47 @@ export type Database = {
   };
   public: {
     Tables: {
+      account_appeals: {
+        Row: {
+          created_at: string;
+          decision_note: string | null;
+          id: string;
+          message: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          decision_note?: string | null;
+          id?: string;
+          message: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          decision_note?: string | null;
+          id?: string;
+          message?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "account_appeals_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       admin_roles: {
         Row: {
           created_at: string;
@@ -1101,6 +1142,29 @@ export type Database = {
     };
     Functions: {
       ack_warning: { Args: { p_id: string }; Returns: undefined };
+      admin_analytics: {
+        Args: { p_days?: number };
+        Returns: {
+          day: string;
+          likes: number;
+          matches: number;
+          messages: number;
+          signups: number;
+        }[];
+      };
+      admin_appeals_queue: {
+        Args: { p_limit?: number; p_status?: string };
+        Returns: {
+          account_status: Database["public"]["Enums"]["account_status"];
+          created_at: string;
+          decision_note: string;
+          first_name: string;
+          id: string;
+          message: string;
+          status: string;
+          user_id: string;
+        }[];
+      };
       admin_audit_log: {
         Args: { p_limit?: number; p_offset?: number };
         Returns: {
@@ -1133,6 +1197,18 @@ export type Database = {
           user_id: string;
         }[];
       };
+      admin_list_locations: {
+        Args: never;
+        Returns: {
+          id: string;
+          is_active: boolean;
+          kind: Database["public"]["Enums"]["location_kind"];
+          name: string;
+          parent_id: string;
+          slug: string;
+          sort_order: number;
+        }[];
+      };
       admin_list_staff: {
         Args: never;
         Returns: {
@@ -1160,9 +1236,18 @@ export type Database = {
           user_id: string;
         }[];
       };
+      admin_premium_count: { Args: never; Returns: number };
       admin_refund_payment: {
         Args: { p_id: string; p_note: string };
         Returns: undefined;
+      };
+      admin_report_breakdown: {
+        Args: never;
+        Returns: {
+          category: Database["public"]["Enums"]["report_category"];
+          open: number;
+          total: number;
+        }[];
       };
       admin_report_detail: {
         Args: { p_id: string };
@@ -1206,6 +1291,19 @@ export type Database = {
           status: Database["public"]["Enums"]["report_status"];
         }[];
       };
+      admin_revenue: {
+        Args: never;
+        Returns: {
+          all_time: number;
+          currency: string;
+          last_30_days: number;
+          payments: number;
+        }[];
+      };
+      admin_review_appeal: {
+        Args: { p_decision: string; p_id: string; p_note: string };
+        Returns: undefined;
+      };
       admin_review_flag: {
         Args: { p_id: string; p_status: string };
         Returns: undefined;
@@ -1217,6 +1315,18 @@ export type Database = {
           p_note?: string;
         };
         Returns: undefined;
+      };
+      admin_save_location: {
+        Args: {
+          p_active: boolean;
+          p_id: string;
+          p_kind: Database["public"]["Enums"]["location_kind"];
+          p_name: string;
+          p_parent: string;
+          p_slug: string;
+          p_sort: number;
+        };
+        Returns: string;
       };
       admin_set_account_status: {
         Args: {
@@ -1343,6 +1453,15 @@ export type Database = {
       };
       mark_match_seen: { Args: { p_match_id: string }; Returns: undefined };
       match_id_with: { Args: { p_other: string }; Returns: string };
+      my_appeal: {
+        Args: never;
+        Returns: {
+          created_at: string;
+          decision_note: string;
+          reviewed_at: string;
+          status: string;
+        }[];
+      };
       my_blocked: {
         Args: never;
         Returns: {
@@ -1422,6 +1541,7 @@ export type Database = {
         Args: never;
         Returns: Database["public"]["Enums"]["admin_role"];
       };
+      submit_appeal: { Args: { p_message: string }; Returns: string };
       submit_payment: {
         Args: {
           p_amount_minor: number;

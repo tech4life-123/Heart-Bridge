@@ -72,3 +72,7 @@ Enum `admin_role` now: moderator, admin (Super Admin), support, finance. Table `
 
 ## Phase 7 and 9 additions
 Enums `payment_provider` (orange_money, lonestar_momo, card) and `payment_status`. Tables `plans` (seed `premium_monthly`), `payments` (column-level select; reviewer hidden), `subscriptions`, `ai_usage`. `app_settings` seeds: wallet numbers and account name (private, empty), `premium_daily_like_limit`. Functions: `user_is_premium`, `my_entitlements`, `payment_options`, `submit_payment`, `cancel_my_payment`, `admin_payments_queue`, `admin_review_payment`, `admin_refund_payment`, `likes_received_count`, `likes_received` (premium only), `ai_consume`; `likes_enforce_limit` now premium-aware.
+
+
+## Admin extras additions
+Table `account_appeals` (no client grants). Functions: `submit_appeal`, `my_appeal`, `admin_appeals_queue`, `admin_review_appeal`, `admin_list_locations`, `admin_save_location`, `admin_analytics`, `admin_report_breakdown`, `admin_revenue`, `admin_premium_count`.

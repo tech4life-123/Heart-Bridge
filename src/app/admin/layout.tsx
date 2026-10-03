@@ -22,8 +22,15 @@ export default async function AdminLayout({
       label: "People",
       roles: ["moderator", "admin", "support"],
     },
+    { href: "/admin/appeals", label: "Appeals", roles: ["moderator", "admin"] },
+    {
+      href: "/admin/analytics",
+      label: "Analytics",
+      roles: ["moderator", "admin", "finance"],
+    },
     { href: "/admin/payments", label: "Payments", roles: ["finance", "admin"] },
     { href: "/admin/audit", label: "Audit log", roles: ["admin"] },
+    { href: "/admin/locations", label: "Places", roles: ["admin"] },
     { href: "/admin/staff", label: "Staff", roles: ["admin"] },
   ].filter((l) => l.roles.includes(role));
   return (

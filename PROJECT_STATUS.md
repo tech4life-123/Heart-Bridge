@@ -127,3 +127,12 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Features: plain-words compatibility explanation (person page), 3 opening lines (empty chat), bio helper (`/app/profile/assistant`, suggestion is copied by the member, never saved automatically), advisory moderator summary of a reported conversation (needs `AI_SAFETY_ENABLED=true`; human decides).
 - Safety: server-only key; data minimisation (no names, contact details, photos, exact location); user text wrapped as untrusted data with tag characters stripped; protected attributes never inferred; output rendered as plain text; daily allowance via `ai_consume` (10 free / 50 Premium).
 - To switch on: set `ANTHROPIC_API_KEY` in Vercel (optional `AI_MODEL`, `AI_SAFETY_ENABLED=true`) and redeploy. Privacy page discloses AI use.
+
+
+## Admin extras (built)
+- **Appeals:** suspended/banned members can appeal from their account page (20-1000 chars, one open at a time, 3 per 30 days). Moderators decide at `/admin/appeals` with a required note shown to the member; restoring a ban needs a Super Admin; every decision is audited.
+- **Places editor** `/admin/locations` (Super Admin): add/rename/reorder/switch off regions, cities and communities; never removed; audited.
+- **Analytics** `/admin/analytics`: daily sign-ups, likes, matches, messages (7/30/90 days) and reports by reason for moderators/admins; Premium members and confirmed revenue for finance/admin. Aggregates only.
+- Tests: `supabase/tests/rls_extras.sql` (25 checks, all true live).
+- **Privacy Policy and Terms** rewritten (security-first, accurate to what the app really does). Still need lawyer review. Set `NEXT_PUBLIC_SUPPORT_EMAIL` once you have a monitored support address; until then the pages point to "the support contact shown in the app".
+- Not built (honest): push/email notifications (need a sender address/domain and provider keys), identity verification review, a "pause my profile" switch (the database supports it, the screen does not exist yet).

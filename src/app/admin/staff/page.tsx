@@ -16,8 +16,8 @@ export default async function StaffPage({
       <Card title="Staff roles">
         <p className="text-sm text-muted">
           Super admin: everything. Moderator: reports, profiles, user safety.
-          Support: look people up. Finance: payments (when payments exist).
-          Roles are checked in the database on every action.
+          Support: look people up. Finance: payments and revenue. Roles are
+          checked in the database on every action.
         </p>
         <ul className="divide-y divide-line">
           {(data ?? []).map((s) => (
