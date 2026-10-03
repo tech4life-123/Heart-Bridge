@@ -23,3 +23,10 @@ export async function requireStaff(next: string, allowed: StaffRole[]) {
 export const MODERATION: StaffRole[] = ["moderator", "admin"];
 export const PEOPLE: StaffRole[] = ["moderator", "admin", "support"];
 export const SUPER: StaffRole[] = ["admin"];
+export const FINANCE: StaffRole[] = ["finance", "admin"];
+export const ANY_STAFF: StaffRole[] = [
+  "moderator",
+  "admin",
+  "support",
+  "finance",
+];

@@ -27,5 +27,11 @@ Status key: DONE = verified by tests/inspection, YOU = needs the owner, LATER = 
 9. Have a Liberian lawyer review Privacy and Terms.
 10. Decide how people reach support (the app says "contact HeartBridge support" but has no contact page yet).
 
+## Premium and AI (owner)
+11. Set the merchant wallet numbers (Orange Money, Lonestar MTN MoMo) and account name with the SQL in PROJECT_STATUS.md (Phase 7). Until then Premium shows "opening soon".
+12. Create at least one `finance` staff member (Staff page) and agree a routine for checking the wallet statement and confirming payments promptly.
+13. Make a real US$2 test payment end to end before announcing Premium.
+14. To enable AI: add `ANTHROPIC_API_KEY` in Vercel (optionally `AI_MODEL`, `AI_SAFETY_ENABLED=true`), redeploy, and set a spending limit in the Anthropic console.
+
 ## Later
-- Phone OTP login (needs an SMS budget), real identity verification, premium and payments (Phase 7), AI assistant (Phase 9), push/email notifications, nonce-based CSP, automated browser end-to-end tests with a test Supabase project, analytics/monitoring (e.g. Vercel Analytics, error reporting).
+- Phone OTP login (needs an SMS budget), real identity verification, push/email notifications, nonce-based CSP, automated browser end-to-end tests with a test Supabase project, analytics/monitoring (e.g. Vercel Analytics, error reporting).

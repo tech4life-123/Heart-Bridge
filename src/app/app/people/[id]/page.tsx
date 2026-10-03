@@ -5,24 +5,44 @@ import { Alert } from "@/components/ui/Alert";
 import { SafetyPanel } from "@/features/safety/components/SafetyPanel";
 import { CardActions } from "@/features/discovery/components/CardActions";
 import { CompatibilityBadge } from "@/features/discovery/components/CompatibilityBadge";
+import { explainAction } from "@/features/ai/actions";
+import { AiTextButton } from "@/features/ai/components/AiBox";
+import { aiAvailable } from "@/lib/ai";
 import { requireOnboarded } from "@/features/discovery/context";
 import { attachPhotoUrls, loadPeople } from "@/features/discovery/queries";
-import { CHILDREN_OPTIONS, HABIT_OPTIONS, INTENTIONS, labelFor } from "@/features/profile/constants";
+import {
+  CHILDREN_OPTIONS,
+  HABIT_OPTIONS,
+  INTENTIONS,
+  labelFor,
+} from "@/features/profile/constants";
 import { getInterests } from "@/features/profile/queries";
 
 export const metadata: Metadata = { title: "Profile" };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export default async function PersonPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PersonPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
 
   const { supabase, bundle } = await requireOnboarded(`/app/people/${id}`);
-  if (!bundle) return <Alert tone="error">We couldn&apos;t load your account. Please refresh the page.</Alert>;
+  if (!bundle)
+    return (
+      <Alert tone="error">
+        We couldn&apos;t load your account. Please refresh the page.
+      </Alert>
+    );
 
   // The database decides whether this person may be seen (preferences, visibility, blocks).
-  const [found, interests] = await Promise.all([loadPeople(supabase, bundle, [id]), getInterests(supabase)]);
+  const [found, interests] = await Promise.all([
+    loadPeople(supabase, bundle, [id]),
+    getInterests(supabase),
+  ]);
   if (found.length === 0) notFound();
   const [person] = await attachPhotoUrls(supabase, found, "all");
 
@@ -33,12 +53,19 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
     .filter((i): i is { label: string; shared: boolean } => Boolean(i.label))
     .sort((a, b) => Number(b.shared) - Number(a.shared));
 
-  const intentions = [person.intentionPrimary, ...person.intentionsExtra].filter(Boolean) as (typeof INTENTIONS)[number]["value"][];
+  const intentions = [
+    person.intentionPrimary,
+    ...person.intentionsExtra,
+  ].filter(Boolean) as (typeof INTENTIONS)[number]["value"][];
   const facts = [
     person.education,
     labelFor(CHILDREN_OPTIONS, person.childrenPreference),
-    person.smoking && person.smoking !== "prefer_not_to_say" ? `Smoking: ${labelFor(HABIT_OPTIONS, person.smoking)?.toLowerCase()}` : null,
-    person.drinking && person.drinking !== "prefer_not_to_say" ? `Drinking: ${labelFor(HABIT_OPTIONS, person.drinking)?.toLowerCase()}` : null,
+    person.smoking && person.smoking !== "prefer_not_to_say"
+      ? `Smoking: ${labelFor(HABIT_OPTIONS, person.smoking)?.toLowerCase()}`
+      : null,
+    person.drinking && person.drinking !== "prefer_not_to_say"
+      ? `Drinking: ${labelFor(HABIT_OPTIONS, person.drinking)?.toLowerCase()}`
+      : null,
     person.languages.length ? `Speaks ${person.languages.join(", ")}` : null,
   ].filter(Boolean) as string[];
 
@@ -46,7 +73,10 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="space-y-5">
-      <Link href="/app/discover" className="inline-flex min-h-11 items-center text-gold">
+      <Link
+        href="/app/discover"
+        className="inline-flex min-h-11 items-center text-gold"
+      >
         ‹ Back to recommendations
       </Link>
 
@@ -69,7 +99,10 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
         )}
 
         {photos.length > 1 && (
-          <ul className="grid grid-cols-3 gap-1 p-1 sm:grid-cols-5" aria-label="More photos">
+          <ul
+            className="grid grid-cols-3 gap-1 p-1 sm:grid-cols-5"
+            aria-label="More photos"
+          >
             {photos.slice(1).map((url, i) => (
               <li key={url}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -94,7 +127,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
               <span className="font-medium text-muted">, {person.age}</span>
             </h1>
             {person.place && <p className="text-muted">{person.place}</p>}
-            {person.occupation && <p className="text-sm text-muted">{person.occupation}</p>}
+            {person.occupation && (
+              <p className="text-sm text-muted">{person.occupation}</p>
+            )}
           </div>
 
           {intentions.length > 0 && (
@@ -111,8 +146,21 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
           )}
 
           <CompatibilityBadge compatibility={person.compatibility} open />
+          {aiAvailable() && (
+            <div className="mt-3">
+              <AiTextButton
+                action={explainAction}
+                fields={{ id: person.id }}
+                label="Explain in plain words (AI)"
+              />
+            </div>
+          )}
 
-          {person.bio && <p className="whitespace-pre-line text-base leading-relaxed">{person.bio}</p>}
+          {person.bio && (
+            <p className="whitespace-pre-line text-base leading-relaxed">
+              {person.bio}
+            </p>
+          )}
 
           {facts.length > 0 && (
             <ul className="space-y-1 text-sm text-muted">
@@ -132,19 +180,33 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
                     className={`rounded-full border px-3 py-1 text-sm ${i.shared ? "border-gold text-gold" : "border-line"}`}
                   >
                     {i.label}
-                    {i.shared && <span className="sr-only"> (you share this)</span>}
+                    {i.shared && (
+                      <span className="sr-only"> (you share this)</span>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          <CardActions id={person.id} firstName={person.firstName} isLiked={person.isLiked} isSaved={person.isSaved} />
+          <CardActions
+            id={person.id}
+            firstName={person.firstName}
+            isLiked={person.isLiked}
+            isSaved={person.isSaved}
+          />
         </div>
       </article>
 
-      <section aria-label="Safety" className="rounded-3xl border border-line bg-surface p-4">
-        <SafetyPanel targetId={person.id} name={person.firstName} back="discover" />
+      <section
+        aria-label="Safety"
+        className="rounded-3xl border border-line bg-surface p-4"
+      >
+        <SafetyPanel
+          targetId={person.id}
+          name={person.firstName}
+          back="discover"
+        />
       </section>
     </div>
   );

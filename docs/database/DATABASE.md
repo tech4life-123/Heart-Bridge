@@ -68,3 +68,7 @@ Tables `reports` (+ enums `report_category`, `report_status`) and `safety_flags`
 
 ## Phase 8 additions
 Enum `admin_role` now: moderator, admin (Super Admin), support, finance. Table `user_warnings`. Helpers `staff_has`, `staff_role` (callable), `require_staff`, `write_audit` (internal only). Staff functions: `admin_stats`, `admin_report_queue`, `admin_report_detail`, `admin_set_report_status`, `admin_report_messages` (audited), `admin_find_user`, `admin_user_overview`, `admin_set_account_status`, `admin_warn_user`, `admin_flags_queue`, `admin_review_flag`, `admin_audit_log`, `admin_list_staff`, `admin_set_staff_role`. Storage policy `profile_photos_read_staff`.
+
+
+## Phase 7 and 9 additions
+Enums `payment_provider` (orange_money, lonestar_momo, card) and `payment_status`. Tables `plans` (seed `premium_monthly`), `payments` (column-level select; reviewer hidden), `subscriptions`, `ai_usage`. `app_settings` seeds: wallet numbers and account name (private, empty), `premium_daily_like_limit`. Functions: `user_is_premium`, `my_entitlements`, `payment_options`, `submit_payment`, `cancel_my_payment`, `admin_payments_queue`, `admin_review_payment`, `admin_refund_payment`, `likes_received_count`, `likes_received` (premium only), `ai_consume`; `likes_enforce_limit` now premium-aware.

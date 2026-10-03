@@ -111,3 +111,19 @@ A revised master spec replaced the earlier one. Differences that affect the plan
 - Added: Content-Security-Policy, error/not-found/loading pages, `/api/health`, Privacy and Terms drafts (footer + signup links), self-service account deletion (screen, photo cleanup, refused while a safety review is open or for staff), 9 covering indexes for foreign keys (advisor findings), full dependency audit (0 vulnerabilities).
 - Next.js 16 note: error boundaries receive `retry`, not `reset`.
 - Owner actions remain (SQL for delete function, auth URLs, SMTP, backups, two-account phone test, legal review): see the checklist.
+
+
+## Phase 7 - Premium and payments (built; payments are MANUALLY verified)
+- Plan `premium_monthly`: US$2.00 for 30 days. Page `/app/premium` (price, how to pay, transaction-ID form, history, cancel a pending submission). Wallets for **Orange Money** and **Lonestar MTN MoMo**; card is listed as unavailable and cannot be used.
+- No mobile-money API is connected, so nothing is ever marked paid automatically. The member pays the merchant wallet and submits the transaction ID; **finance staff** (or Super Admin) confirm it at `/admin/payments` against the real wallet statement. Only then does Premium start (extends by 30 days on renewal). Nobody can review their own payment; refunds are recorded with a reason; every review is audited. Unique transaction IDs, 5 submissions per 24h, one pending at a time.
+- Until the owner sets the wallet numbers the page says "Payments are opening soon" (no fake option). Set them in the SQL Editor:
+  `update public.app_settings set value = to_jsonb('<number>'::text) where key = 'payment_orange_number';` (also `payment_lonestar_number`, `payment_account_name`).
+- Premium gates enforced in the database: "Who liked you" (`/app/likes`; free members see only a count), 500 likes a day instead of 50, larger AI allowance. Safety, messaging and verification are never paywalled.
+- Code: `src/features/premium/` (provider abstraction in `providers.ts`; add an `automatic` provider later that calls the same database review function from a verified webhook).
+- Tests: `supabase/tests/rls_premium.sql` (29 checks, all true live).
+
+## Phase 9 - Optional AI (built; OFF until a key is added)
+- Modular: `src/lib/ai/` (provider interface, Anthropic implementation, prompt-safety helpers) and `src/features/ai/` (service, actions, UI). AI never blocks anything; every feature degrades to "The AI assistant isn't switched on yet".
+- Features: plain-words compatibility explanation (person page), 3 opening lines (empty chat), bio helper (`/app/profile/assistant`, suggestion is copied by the member, never saved automatically), advisory moderator summary of a reported conversation (needs `AI_SAFETY_ENABLED=true`; human decides).
+- Safety: server-only key; data minimisation (no names, contact details, photos, exact location); user text wrapped as untrusted data with tag characters stripped; protected attributes never inferred; output rendered as plain text; daily allowance via `ai_consume` (10 free / 50 Premium).
+- To switch on: set `ANTHROPIC_API_KEY` in Vercel (optional `AI_MODEL`, `AI_SAFETY_ENABLED=true`) and redeploy. Privacy page discloses AI use.
